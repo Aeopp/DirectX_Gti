@@ -1,0 +1,2 @@
+D:\DirectX_Gti\DX_Lib\DX_Lib\Output\DX_Lib.pdb
+D:\DirectX_Gti\DX_Lib\DX_Lib\Log\DX_Lib.pdb
