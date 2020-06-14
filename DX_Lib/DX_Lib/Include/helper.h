@@ -12,20 +12,34 @@ namespace std {
 };
 
 // ³Î°Ë»ç
-template<typename _ptrType>
-static bool IsValid(_ptrType ptr) {
-	static_assert(std::is_pointer_v<_ptrType> && L"Not Pointer Type");
 
-	return (ptr != nullptr);
-};
 
-template<typename _ptrType>
-static void Safe_Delete(_ptrType& ptr) {
-	if (IsValid(ptr) == true) {
-		delete ptr;
-		ptr = nullptr;
+
+	template<typename _ptrType>
+	static void Safe_Delete(_ptrType& ptr) {
+		if (IsValid(ptr) == true) {
+			delete ptr;
+			ptr = nullptr;
+		};
 	};
-};
+
+	template<typename _ptrType>
+	static void Safe_Release(_ptrType& ptr) {
+		static_assert((std::is_pointer_v<_ptrType > == true)
+		&& L"is not pointer type");
+
+		if (ptr != nullptr) {
+			ptr->Release();
+		}
+	};
+
+	template<typename _ptrType>
+	static bool IsValid(_ptrType ptr) {
+		static_assert(std::is_pointer_v<_ptrType> && L"Not Pointer Type");
+
+		return (ptr != nullptr);
+	};
+
 
 namespace DX {
 	template<typename _ptrType>
@@ -33,21 +47,15 @@ namespace DX {
 		static_assert((std::is_pointer_v<_ptrType > == true)
 			&& L"is not pointer type");
 
-
 		if (ptr != nullptr) {
 			ptr->Release();
+			ptr = nullptr;
 		}
 	};
 
 	template<typename ..._DX_PTR_TYPE>
 	static void CheckValidRelease(_DX_PTR_TYPE&&... ptrs) {
-		static auto CheckRelease =
-			[](auto& ptr) noexcept {
-			if (IsValid(ptr)) {
-				ptr->Release();
-			}
-		};
-		(CheckRelease(ptrs), ...);
+		(DX::Safe_Release(ptrs), ...);
 	}
 }
 

@@ -202,6 +202,7 @@ bool UMesh::Init() noexcept
 bool UMesh::Release() noexcept
 {
 	DX::CheckValidRelease(SamplerState,SRV,VertexBuffer,VertexLayout,VS,PS);
+
 	for (auto& SRV : AnimSRV) {
 		DX::Safe_Release(SRV);
 	};

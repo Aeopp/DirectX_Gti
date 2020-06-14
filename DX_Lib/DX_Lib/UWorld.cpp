@@ -17,7 +17,7 @@ bool UWorld::Init()
 bool UWorld::Release() noexcept
 {
     for (auto& Actor : ActorList) {
-        DX::Safe_Release(Actor);
+        Safe_Release(Actor);
         Safe_Delete(Actor);
     };
     ActorList.clear();
@@ -79,3 +79,27 @@ bool UWorld::Render(float DeltaTime)
     }
     return true;
 }
+
+//inline void UWorld::ExcludedObject(UObject* Object) & noexcept {
+//
+//    if (IsValid(Object) == false)return;
+//
+//    if (auto IsActor = dynamic_cast<AActor*>(Object);
+//        IsValid(IsActor)) {
+//        DeleteActor(IsActor);
+//    }
+//    else if (auto IsMesh = dynamic_cast<UMesh*>(Object);
+//        IsValid(IsMesh)) {
+//        if (auto iter = std::find(std::begin(MeshList), std::end(MeshList), Object);
+//            iter != std::end(MeshList)) {
+//            MeshList.erase(iter);
+//        }
+//    }
+//    else if (auto IsCollision = dynamic_cast<UCollision*>(Object);
+//        IsValid(IsMesh)) {
+//        if (auto iter = std::find(std::begin(CollisionList), std::end(CollisionList), Object);
+//            iter != std::end(CollisionList)) {
+//            CollisionList.erase(iter);
+//        }
+//    }
+//}

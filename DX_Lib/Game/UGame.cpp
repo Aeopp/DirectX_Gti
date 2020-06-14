@@ -7,6 +7,7 @@
 #include "UDevice.h"
 #include "UWorld.h"
 #include "APlayer.h"
+#include "UMesh.h"
 
 #include "DX_Header.h"
 #include "DataTable.h"
@@ -64,7 +65,6 @@ bool UGame::Init()
 
 	DX::Safe_Release(Surface);
 
-	auto Actor =UWorld::Instance().CreateActor<APlayer>();
 
 	return true;
 }

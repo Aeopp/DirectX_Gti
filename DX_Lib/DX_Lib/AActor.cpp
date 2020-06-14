@@ -1,6 +1,8 @@
 #include "AActor.h"
 #include "helper.h"
 
+#include "UWorld.h"
+#include "UCollision.h"
 #include "UMesh.h"
 
 bool AActor::Init() noexcept
@@ -11,10 +13,19 @@ bool AActor::Init() noexcept
 bool AActor::Release() noexcept
 {
 	for (auto& Component : ComponentList) {
-		DX::Safe_Release(Component);
+		if (IsValid(Component) == false) {
+			continue;
+		};
+		Safe_Release(Component);
 		Safe_Delete(Component);
 	}
 	ComponentList.clear();
+
+	UWorld::Instance().ExcludedObject(_Mesh);
+	UWorld::Instance().ExcludedObject(_Collision);
+	_Mesh = nullptr;
+	_Collision = nullptr;
+
 	return true;
 }
 

@@ -1,7 +1,7 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(452,5): warning MSB8004: Intermediate 디렉터리가 슬래시로 끝나지 않습니다. Intermediate 디렉터리의 적절한 평가를 허용하는 데 필요하므로 이 빌드 인스턴스에서 슬래시를 추가합니다.
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(453,5): warning MSB8004: Output 디렉터리가 슬래시로 끝나지 않습니다. Output 디렉터리의 적절한 평가를 허용하는 데 필요하므로 이 빌드 인스턴스에서 슬래시를 추가합니다.
   APlayer.cpp
-D:\DirectX_Gti\DX_Lib\DX_Lib\UWorld.h(87,2): warning C4099: 'std::default_delete<UWorld>': 처음에는 'struct'을(를) 사용하여 형식 이름을 표시했는데 이제는 'class'을(를) 사용하여 표시합니다.
+D:\DirectX_Gti\DX_Lib\DX_Lib\UWorld.h(88,2): warning C4099: 'std::default_delete<UWorld>': 처음에는 'struct'을(를) 사용하여 형식 이름을 표시했는데 이제는 'class'을(를) 사용하여 표시합니다.
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.26.28801\include\memory(760): message : 'std::default_delete<UWorld>' 선언을 참조하십시오.
 D:\dx\Include\dxgitype.h(12,1): warning C4005: 'DXGI_STATUS_OCCLUDED': 매크로 재정의
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\shared\winerror.h(55840): message : 'DXGI_STATUS_OCCLUDED'의 이전 정의를 참조하십시오.
@@ -63,6 +63,9 @@ D:\DirectX_Gti\DX_Lib\DX_Lib\UDevice.h(42,2): warning C4099: 'std::default_delet
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.26.28801\include\memory(760): message : 'std::default_delete<UDevice>' 선언을 참조하십시오.
 D:\DirectX_Gti\DX_Lib\DX_Lib\UTimer.h(45,2): warning C4099: 'std::default_delete<UTimer>': 처음에는 'struct'을(를) 사용하여 형식 이름을 표시했는데 이제는 'class'을(를) 사용하여 표시합니다.
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.26.28801\include\memory(760): message : 'std::default_delete<UTimer>' 선언을 참조하십시오.
+  D:\dx\Include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+D:\DirectX_Gti\DX_Lib\DX_Lib\UInput.h(54,2): warning C4099: 'std::default_delete<UInput>': 처음에는 'struct'을(를) 사용하여 형식 이름을 표시했는데 이제는 'class'을(를) 사용하여 표시합니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.26.28801\include\memory(760): message : 'std::default_delete<UInput>' 선언을 참조하십시오.
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.26.28801\include\xstring(2395,23): warning C4244: '인수': 'const wchar_t'에서 'const _Elem'(으)로 변환하면서 데이터가 손실될 수 있습니다.
           with
           [
@@ -170,7 +173,7 @@ D:\dx\Include\d3d10.h(609,1): warning C4005: 'D3D10_ERROR_FILE_NOT_FOUND': 매�
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\shared\winerror.h(56288): message : 'D3D10_ERROR_FILE_NOT_FOUND'의 이전 정의를 참조하십시오.
 D:\DirectX_Gti\DX_Lib\DX_Lib\UDevice.h(42,2): warning C4099: 'std::default_delete<UDevice>': 처음에는 'struct'을(를) 사용하여 형식 이름을 표시했는데 이제는 'class'을(를) 사용하여 표시합니다.
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.26.28801\include\memory(760): message : 'std::default_delete<UDevice>' 선언을 참조하십시오.
-D:\DirectX_Gti\DX_Lib\DX_Lib\UWorld.h(87,2): warning C4099: 'std::default_delete<UWorld>': 처음에는 'struct'을(를) 사용하여 형식 이름을 표시했는데 이제는 'class'을(를) 사용하여 표시합니다.
+D:\DirectX_Gti\DX_Lib\DX_Lib\UWorld.h(88,2): warning C4099: 'std::default_delete<UWorld>': 처음에는 'struct'을(를) 사용하여 형식 이름을 표시했는데 이제는 'class'을(를) 사용하여 표시합니다.
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.26.28801\include\memory(760): message : 'std::default_delete<UWorld>' 선언을 참조하십시오.
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.26.28801\include\xstring(2395,23): warning C4244: '인수': 'const wchar_t'에서 'const _Elem'(으)로 변환하면서 데이터가 손실될 수 있습니다.
           with
@@ -213,4 +216,6 @@ D:\DirectX_Gti\DX_Lib\DX_Lib\helper.h(7): message : 컴파일되는 함수 템�
           ]
   코드를 생성하고 있습니다...
 D:\DirectX_Gti\DX_Lib\DX_Lib\UWorld.h(44): warning C4715: 'UWorld::CreateObject<UMesh>': 모든 제어 경로에서 값을 반환하지는 않습니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(452,5): warning MSB8004: Intermediate 디렉터리가 슬래시로 끝나지 않습니다. Intermediate 디렉터리의 적절한 평가를 허용하는 데 필요하므로 이 빌드 인스턴스에서 슬래시를 추가합니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(453,5): warning MSB8004: Output 디렉터리가 슬래시로 끝나지 않습니다. Output 디렉터리의 적절한 평가를 허용하는 데 필요하므로 이 빌드 인스턴스에서 슬래시를 추가합니다.
   Game.vcxproj -> D:\DirectX_Gti\DX_Lib\Game\Output\Game.exe

@@ -63,7 +63,7 @@ public:
 			}
 		}
 	}
-
+	
 	template<typename ActorType,typename ...ParamPassType>
 	ActorType* CreateActor(ParamPassType&&... Params)&{
 		static_assert(std::is_base_of_v<AActor, ActorType>, "Is Not Base of AActorType");
@@ -78,10 +78,11 @@ public:
 
 		if (auto iter = std::find(std::begin(ActorList), std::end(ActorList), Target);
 			iter != std::end(ActorList)) {
-			DX::Safe_Release(*iter);
+			Safe_Release(*iter);
 			Safe_Delete(*iter);
 			ActorList.erase(iter);
 		}
+		
 	};
 
 	DECLARE_SINGLETON(UWorld)

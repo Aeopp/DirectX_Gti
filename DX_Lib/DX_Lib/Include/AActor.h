@@ -74,6 +74,7 @@ void AActor::SetComponentMemberVariableByObjectType(UObjectType* ComponentType) 
 	};
 };
 
+// 런타임 타입체크아님 타입 명시해줘야 제대로 지워짐
 template <typename UObjectType>
 void AActor::EraseComponent(UObjectType* _Object)&
 {
@@ -81,7 +82,7 @@ void AActor::EraseComponent(UObjectType* _Object)&
 
 	if (auto iter = std::find(std::begin(ComponentList), std::end(ComponentList), _Object);
 		iter != std::end(ComponentList)) {
-		DX::Safe_Release(*iter);
+		Safe_Release(*iter);
 		Safe_Delete(*iter);
 		ComponentList.erase(iter);
 		// 액터에서 완전히 정리한 이후 월드가 관리하는 대상에서도 제외시켜준다
