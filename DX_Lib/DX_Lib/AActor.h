@@ -18,6 +18,7 @@ private:
 	class UCollision* _Collision = nullptr;
 	std::vector<class UObject*>ComponentList{};
 	FVector3 _Location{}; 
+	FVector3 Velocity{};
 public:
 	virtual ~AActor()noexcept;
 	using Super = UObject; 
@@ -33,7 +34,12 @@ public:
 
 	void SetMesh(class UMesh* Rhs) & noexcept;
 	
-
+	inline FVector3 GetVelocity() noexcept {
+		return Velocity;
+	}; 
+	inline void SetVelocity(FVector3 _SetLocation) noexcept {
+		Velocity = std::move(_SetLocation);
+	}
 	inline class UMesh* GetMesh()const& noexcept {
 		return _Mesh;
 	};
@@ -43,6 +49,11 @@ public:
 	inline void SetLocation(FVector3 Rhs)&noexcept {
 		_Location = std::move_if_noexcept(Rhs);
 	}
+
+	void MoveForward( float DeltaTime);
+	void MoveBackward( float DeltaTime);
+	void MoveRight( float DeltaTime);
+	void MoveLeft( float DeltaTime);
 private:
 	template <typename UObjectType>
 	void SetComponentMemberVariableByObjectType(UObjectType* ComponentType);

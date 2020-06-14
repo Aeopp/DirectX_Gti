@@ -14,7 +14,7 @@ public:
 	bool Play(const std::string& SoundKey,bool IsBgm = false);
 	bool Load(std::string FullPath);
 	bool Init();
-	bool Frame();
+	bool Frame(const float DeltaTime);
 	bool Release();
 private:
 	std::string CurrentBgmKey;

@@ -49,7 +49,7 @@ public:
 		return m_MousePos;
 	}
 	bool  Init();
-	bool  Frame();
+	bool  Frame(const float DeltaTime);
 	bool  Release();
 	DECLARE_SINGLETON(UInput)
 };

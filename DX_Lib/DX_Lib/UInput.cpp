@@ -52,7 +52,7 @@ bool UInput::Init()
 	while (m_pMouse->Acquire() == DIERR_INPUTLOST);
 	return true;
 }
-bool UInput::Frame()
+bool UInput::Frame(const float DeltaTime)
 {
 	HRESULT hr;
 	GetCursorPos(&m_MousePos);// ½ºÅ©¸°ÁÂÇ¥
@@ -103,7 +103,7 @@ bool UInput::Frame()
 		m_pMouse->Acquire();
 	}
 
-	EventNotify(0);
+	EventNotify(DeltaTime);
 
 	return true;
 }

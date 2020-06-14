@@ -70,7 +70,7 @@ bool USound::Load(std::string FullPath) {
 };
 
 
-bool USound::Frame() {
+bool USound::Frame(const float DeltaTime) {
 	if (FMOD_System == nullptr) return false;
 	// update 함수는 매프레임마다 반드시 호출해줘야함을 요구함
 	FMOD_System->update();

@@ -52,3 +52,26 @@ void AActor::SetMesh(class UMesh* Rhs) & noexcept {
 		_Mesh->SetOwner(this);
 	};
 };
+
+
+void AActor::MoveForward( float DeltaTime) {
+	auto Position = GetLocation();
+	Position.y += Velocity.y * DeltaTime;
+	SetLocation(Position);
+}
+void AActor::MoveBackward( float DeltaTime) {
+	auto Position = GetLocation();
+	Position.y -= Velocity.y * DeltaTime;
+	SetLocation(Position);
+}
+void AActor::MoveRight( float DeltaTime) {
+	auto Position = GetLocation();
+	Position.x += Velocity.x * DeltaTime;
+	SetLocation(Position);
+}
+void AActor::MoveLeft( float DeltaTime) {
+	auto Position = GetLocation();
+	Position.x -= Velocity.x * DeltaTime;
+	SetLocation(Position);
+	
+}

@@ -28,24 +28,16 @@ bool UMesh::Create(
 	D3DDevice = pd3dDevice;
 	D3DContext = pContext;
 	RenderRect = rect;
+	RenderSize = { RenderRect.right,RenderRect.bottom };
 	VertexList.resize(6);
 
-	VertexList[0].p = FMath::ScreenToNDC({ rect.left, rect.top });
+	OwnerPositionTORenderRECT();
+
 	VertexList[0].t = FVector2(0, 0);
-	
-	VertexList[1].p = FMath::ScreenToNDC({ rect.right, rect.top });
 	VertexList[1].t = FVector2(1, 0);
-	
-	VertexList[2].p = FMath::ScreenToNDC({ rect.left, rect.bottom });
 	VertexList[2].t = FVector2(0, 1);
-	
-	VertexList[3].p = FMath::ScreenToNDC({ rect.left, rect.bottom });
 	VertexList[3].t = FVector2(0, 1);
-	
-	VertexList[4].p = FMath::ScreenToNDC({ rect.right, rect.top });
 	VertexList[4].t = FVector2(1, 0);
-	
-	VertexList[5].p = FMath::ScreenToNDC({ rect.right, rect.bottom });
 	VertexList[5].t = FVector2(1, 1);
 
 	AnimSRV.resize(AnimLength);
@@ -269,12 +261,37 @@ void UMesh::OwnerPositionTORenderRECT()&
 		return;
 	}
 
+	auto OwnerPosition = Owner->GetLocation();
+
+	/*for (auto& element : VertexList) {
+		element.p.x += 0.01f;
+		element.p.y += 0.01f;
+		}*/
+
+	/*VertexList[0].p = FMath::ScreenToNDC({ RenderRect.left, RenderRect.top });
+	VertexList[0].t = FVector2(0, 0);
+
+	VertexList[1].p = FMath::ScreenToNDC({ RenderRect.right, RenderRect.top });
+	VertexList[1].t = FVector2(1, 0);
+
+	VertexList[2].p = FMath::ScreenToNDC({ RenderRect.left, RenderRect.bottom });
+	VertexList[2].t = FVector2(0, 1);
+
+	VertexList[3].p = FMath::ScreenToNDC({ RenderRect.left, RenderRect.bottom });
+	VertexList[3].t = FVector2(0, 1);
+
+	VertexList[4].p = FMath::ScreenToNDC({ RenderRect.right, RenderRect.top });
+	VertexList[4].t = FVector2(1, 0);
+
+	VertexList[5].p = FMath::ScreenToNDC({ RenderRect.right, RenderRect.bottom });
+	VertexList[5].t = FVector2(1, 1);*/
+
 	const FVector3& _Owner_Location = Owner->GetLocation();
 	RenderRect.left = _Owner_Location.x;
 	RenderRect.top = _Owner_Location.y;
 
-	RenderRect.right = RenderRect.right +_Owner_Location.x;
-	RenderRect.bottom = RenderRect.bottom + _Owner_Location.y;
+	RenderRect.right = RenderSize.x +_Owner_Location.x;
+	RenderRect.bottom = RenderSize.y + _Owner_Location.y;
 
 	FVector3 left_top = FMath::ScreenToNDC({ RenderRect.left, RenderRect.top });
 	FVector3 right_top = FMath::ScreenToNDC({ RenderRect.right, RenderRect.top });
@@ -287,6 +304,8 @@ void UMesh::OwnerPositionTORenderRECT()&
 	VertexList[3].p = left_bottom;
 	VertexList[4].p = right_top;
 	VertexList[5].p = right_bottom;
+
+
 }
 
 

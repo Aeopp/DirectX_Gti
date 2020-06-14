@@ -31,7 +31,7 @@ public :
 
 	class AActor* Owner = nullptr;
 	FRect RenderRect{};
-
+	FVector2 RenderSize{ };
 	std::vector<ID3D11ShaderResourceView*> AnimSRV;
 
 	uint32_t Layer = 0;

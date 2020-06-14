@@ -6,6 +6,8 @@ class APlayer :public AActor
 	using Super = AActor;
 public :
 	bool Init()noexcept;
+
+	
 private:
 	APlayer();
 	virtual ~APlayer()noexcept;

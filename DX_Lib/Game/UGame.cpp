@@ -44,27 +44,14 @@ bool UGame::Init()
 		[SoundPath = path::s::DefaultResourcePath + path::s::WhenTheMorningComess](float) {
 		USound::Instance().Play(SoundPath,true);
 	}, EKeyState::Press, DIK_F2);
-	
-	auto Temp = [hWnd = UWindow::Instance().hWnd](float) {
-			if (hWnd != nullptr) {
-				MessageBox(hWnd, L"OnceEvent 5초지남", L"OnceEvent 5초지남", NULL);
-			}
-		};
-	UTimer::Instance().EventRegist(Temp, UTimer::ECategory::Once, 5.f);
-	
-	auto Temp2 = [hWnd = UWindow::Instance().hWnd](float) {
-		if (hWnd != nullptr) {
-			MessageBox(hWnd, L"LoopEvent  10초지남", L"LoopEvent 10지남", NULL);
-		}
-	};
-	UTimer::Instance().EventRegist(Temp2, UTimer::ECategory::Loop,10.f);
-
 
 	IDXGISurface* Surface = nullptr;
 	UDevice::Instance().SwapChain->GetBuffer(0,__uuidof(IDXGISurface),(void**)&Surface);
 
 	DX::Safe_Release(Surface);
 
+	auto Player = UWorld::Instance().CreateActor<APlayer>();
+	Player->SetLocation({500.f,500.0f,0.f});
 
 	return true;
 }

@@ -71,8 +71,8 @@ bool UCore::CoreInit()
 bool UCore::CoreFrame(float DeltaTime)
 {
 	UTimer::Instance().Frame();
-	UInput::Instance().Frame();
-	USound::Instance().Frame();
+	UInput::Instance().Frame(DeltaTime);
+	USound::Instance().Frame(DeltaTime);
 	UWorld::Instance().Frame(DeltaTime);
 
 	if (UInput::Instance().KeyState[DIK_ESCAPE] & 0x80) {
