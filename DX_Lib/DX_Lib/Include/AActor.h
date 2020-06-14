@@ -1,10 +1,13 @@
 #pragma once
 #include "UObject.h"
 #include "FVector.h"
+#include "helper.h"
+
 #include <type_traits>
 #include <utility>
 #include <vector>
 #include <typeinfo>
+
 
 class AActor : public UObject
 {
@@ -16,6 +19,7 @@ private:
 	std::vector<class UObject*>ComponentList{};
 	FVector3 _Location{}; 
 public:
+	virtual ~AActor()noexcept;
 	using Super = UObject; 
 	virtual bool Init()noexcept;
 	virtual bool Release()noexcept;
@@ -44,7 +48,7 @@ private:
 	void SetComponentMemberVariableByObjectType(UObjectType* ComponentType);
 protected:
 	AActor() = default;
-	virtual ~AActor()noexcept;
+	
 };
 
 template<typename UObjectType>
@@ -58,6 +62,10 @@ void AActor::AddComponent(UObjectType* _Object)&
 
 template <typename UObjectType>
 void AActor::SetComponentMemberVariableByObjectType(UObjectType* ComponentType) {
+	if (IsValid(ComponentType) == false) {
+		return; 
+	}
+
 	if constexpr (std::is_same_v<std::remove_pointer_t<decltype(_Mesh)>, UObjectType>) {
 		_Mesh = ComponentType;
 	}
@@ -73,15 +81,21 @@ void AActor::EraseComponent(UObjectType* _Object)&
 
 	if (auto iter = std::find(std::begin(ComponentList), std::end(ComponentList), _Object);
 		iter != std::end(ComponentList)) {
-		(*iter)->Release();
-		(*iter) = nullptr;
+		DX::Safe_Release(*iter);
+		Safe_Delete(*iter);
 		ComponentList.erase(iter);
+		// 액터에서 완전히 정리한 이후 월드가 관리하는 대상에서도 제외시켜준다
+		UWorld::Instance().ExcludedObject(_Object);
 	};
 
 	if constexpr (std::is_same_v<std::remove_pointer_t<decltype(_Mesh)>, UObjectType>) {
-		_Mesh = nullptr;
+		if (_Object == _Mesh) {
+			_Mesh = nullptr;
+		}
 	}
 	else if constexpr (std::is_same_v<std::remove_pointer_t<decltype(_Collision)>, UObjectType>) {
-		_Collision = nullptr;
+		if (_Object == _Collision) {
+			_Collision = nullptr;
+		}
 	}
 }

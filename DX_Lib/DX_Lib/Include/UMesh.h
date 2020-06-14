@@ -34,9 +34,17 @@ public :
 
 	std::vector<ID3D11ShaderResourceView*> AnimSRV;
 
+	uint32_t Layer = 0;
 	uint32_t AnimLength = 10;
 	float AnimTime = 0.f;
 	bool bAnim = false;
+
+	enum class ELayer :uint32_t {
+		BackGround=0,
+		Character,
+		Effect,
+		UI,
+	};
 public :
 	inline class AActor* GetOwner() & noexcept {
 		return Owner;
@@ -46,6 +54,7 @@ public :
 	bool Create(
 		const std::wstring_view pTextureFileName,
 		FRect rect, class AActor* Owner,
+		const ELayer SetLayer,
 		ID3D11Device* pd3dDevice=nullptr,
 		ID3D11DeviceContext* pContext=nullptr);
 	bool Init()noexcept;

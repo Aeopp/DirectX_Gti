@@ -19,15 +19,23 @@ static bool IsValid(_ptrType ptr) {
 	return (ptr != nullptr);
 };
 
+template<typename _ptrType>
+static void Safe_Delete(_ptrType& ptr) {
+	if (IsValid(ptr) == true) {
+		delete ptr;
+		ptr = nullptr;
+	};
+};
+
 namespace DX {
 	template<typename _ptrType>
 	static void Safe_Release(_ptrType& ptr) {
 		static_assert((std::is_pointer_v<_ptrType > == true)
 			&& L"is not pointer type");
 
+
 		if (ptr != nullptr) {
 			ptr->Release();
-			ptr = nullptr;
 		}
 	};
 
@@ -37,7 +45,6 @@ namespace DX {
 			[](auto& ptr) noexcept {
 			if (IsValid(ptr)) {
 				ptr->Release();
-				ptr = nullptr;
 			}
 		};
 		(CheckRelease(ptrs), ...);

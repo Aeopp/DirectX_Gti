@@ -5,6 +5,7 @@
 //friend class UWorld;
 class UObject abstract{
 public:
+	bool bEnable = true; 
 	friend class UWorld;
 
 	virtual bool Init()noexcept abstract;
@@ -21,12 +22,12 @@ public:
 	inline uint32_t GetUniqueNumber()const& noexcept {
 		return Unique_Number;
 	};
+	virtual ~UObject()noexcept;
 protected:
 	static inline uint32_t Number = 0;
 	UObject() :Unique_Number{ Number } {
 		UObject::Number++;
 	};
-	virtual ~UObject()noexcept;
 	
 	std::string _Tag{};
 	const uint32_t Unique_Number{};

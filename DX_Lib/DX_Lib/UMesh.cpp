@@ -13,7 +13,8 @@ UMesh::~UMesh()noexcept
 bool UMesh::Create(
 	const std::wstring_view pTextureFileName,
 	FRect rect,
-	AActor* Owner, ID3D11Device* pd3dDevice,
+	AActor* Owner, const ELayer SetLayer, 
+	ID3D11Device* pd3dDevice,
 	ID3D11DeviceContext* pContext )
 {
 	if (IsValid(pd3dDevice) == false) {
@@ -73,6 +74,8 @@ bool UMesh::Create(
 	if (FAILED(hr)) {
 		return false;
 	}
+	Layer = static_cast<decltype(Layer)>(SetLayer);
+
 	Init();
 		//pSamplerDesc.ComparsionFunc=
 		//pSamplerDesc.MipLODBias= 
@@ -199,11 +202,10 @@ bool UMesh::Init() noexcept
 bool UMesh::Release() noexcept
 {
 	DX::CheckValidRelease(SamplerState,SRV,VertexBuffer,VertexLayout,VS,PS);
-
 	for (auto& SRV : AnimSRV) {
 		DX::Safe_Release(SRV);
 	};
-
+	AnimSRV.clear();
 	return true ;
 }
 

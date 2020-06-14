@@ -13,7 +13,8 @@ APlayer::APlayer()
 	auto Mesh = UWorld::Instance().CreateObject<UMesh>(this);
 
 	GetMesh()->Create(path::w::DefaultResourcePath + path::w::IMAGE, 
-	{ 200.f,200.f,400.f,400.f }, this);
+	{ 200.f,200.f,400.f,400.f }, this,
+		UMesh::ELayer::BackGround);
 };
 
 bool APlayer::Init()noexcept {

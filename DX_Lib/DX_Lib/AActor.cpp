@@ -11,9 +11,8 @@ bool AActor::Init() noexcept
 bool AActor::Release() noexcept
 {
 	for (auto& Component : ComponentList) {
-		if (IsValid(Component)) {
-			Component->Release();
-		}
+		DX::Safe_Release(Component);
+		Safe_Delete(Component);
 	}
 	ComponentList.clear();
 	return true;
@@ -21,22 +20,13 @@ bool AActor::Release() noexcept
 
 bool AActor::Frame(float DeltaTime )
 {
-	for (auto& Component : ComponentList) {
-		if (IsValid(Component)) {
-			Component->Frame(DeltaTime);
-		}
-		
-	}
+	
 	return true;
 }
 
 bool AActor::Render(float DeltaTime)
 {
-	for (auto& Component : ComponentList) {
-		if (IsValid(Component)) {
-			Component->Render(DeltaTime);
-		}
-	}
+	
 	return true;
 };
 
@@ -45,11 +35,9 @@ AActor::~AActor() noexcept
 	Release();
 }
 
-
-
 void AActor::SetMesh(class UMesh* Rhs) & noexcept {
 	if (IsValid(Rhs)) {
 		_Mesh = std::move_if_noexcept(Rhs);
 		_Mesh->SetOwner(this);
-	}
-}
+	};
+};
