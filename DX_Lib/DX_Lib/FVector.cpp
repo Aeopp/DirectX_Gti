@@ -99,7 +99,7 @@ FVector2 FVector2::operator/(const float Scala) const& noexcept
 
 float FVector2::DotProduct(const FVector2& Rhs) const& noexcept
 {
-    return  x * Rhs.x + y * Rhs.y z;
+    return  x * Rhs.x + y * Rhs.y;
 };
 
 float FVector2::Length() const& noexcept

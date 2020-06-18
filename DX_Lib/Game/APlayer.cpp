@@ -10,12 +10,15 @@
 #include "FMath.h"
 #include "DataTable.h"
 
-APlayer::APlayer():AActor(){
+APlayer::APlayer() :AActor() {
 	auto Mesh = UWorld::Instance().CreateObject<UMesh>(this);
 
-	GetMesh()->Create(path::w::DefaultResourcePath + path::w::IMAGE, 
-	{0.f,0.f,250.f,224.f}, this,UMesh::ELayer::Character);
-	
+	GetMesh()->Create(path::w::DefaultResourcePath + path::w::IMAGE,
+		{ 0.f,0.f,250.f,224.f }, this, UMesh::ELayer::Character);
+
+	SetLocation({2500.f, 2500.f, 0.f});
+
+
 	GetMesh()->SetAnim(path::w::DefaultPlayerPath +L"Left\\SWING1.png", 3,0,0.2f, L"SWING1");
 	GetMesh()->SetAnim(path::w::DefaultPlayerPath +L"Left\\SWING2.png", 3,0,0.2f, L"SWING2");
 	GetMesh()->SetAnim(path::w::DefaultPlayerPath + L"Left\\STAB.png", 2, 0, 0.2f, L"STAB");

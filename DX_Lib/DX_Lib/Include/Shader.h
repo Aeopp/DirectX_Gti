@@ -25,3 +25,16 @@ struct PCT_VERTEX {
 	static inline constexpr unsigned int COLOR = sizeof(decltype(c));
 	static inline constexpr unsigned int UV = sizeof(decltype(t));
 };
+struct PNCT_VERTEX {
+	FVector3 p;
+	FVector3 n;
+	FVector4 c;
+	FVector2 t;
+
+	static inline constexpr unsigned int POSITION = sizeof(decltype(p));
+	static inline constexpr unsigned int NORMAL = sizeof(decltype(n));
+	static inline constexpr unsigned int COLOR = sizeof(decltype(c));
+	static inline constexpr unsigned int UV = sizeof(decltype(t));
+};
+
+

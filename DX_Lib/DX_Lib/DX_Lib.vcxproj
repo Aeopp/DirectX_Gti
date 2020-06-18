@@ -227,6 +227,7 @@ copy "*.hlsl" "..\\Game\\"</Command>
     <ClCompile Include="CallBackInterface.cpp" />
     <ClCompile Include="FVector.cpp" />
     <ClCompile Include="UAnimationMesh.cpp" />
+    <ClCompile Include="UCamera.cpp" />
     <ClCompile Include="UCollision.cpp" />
     <ClCompile Include="UCore.cpp" />
     <ClCompile Include="UDevice.cpp" />
@@ -248,6 +249,7 @@ copy "*.hlsl" "..\\Game\\"</Command>
     <ClInclude Include="FVector.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="UAnimationMesh.h" />
+    <ClInclude Include="UCamera.h" />
     <ClInclude Include="UCollision.h" />
     <ClInclude Include="UCore.h" />
     <ClInclude Include="UDevice.h" />

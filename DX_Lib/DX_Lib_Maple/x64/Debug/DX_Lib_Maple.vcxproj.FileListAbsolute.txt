@@ -1,0 +1,2 @@
+D:\DirectX_Gti\DX_Lib\x64\Debug\DX_Lib_Maple.pdb
+D:\DirectX_Gti\DX_Lib\DX_Lib_Maple\x64\Debug\DX_Lib_Maple.pdb

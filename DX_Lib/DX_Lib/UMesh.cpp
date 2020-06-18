@@ -107,6 +107,12 @@ bool UMesh::Release() noexcept
 
 bool UMesh::Frame(float DeltaTime)
 {
+	VertexList[0].p = FMath::ScreenToNDC({ RenderRect.left, RenderRect.top });
+	VertexList[1].p = FMath::ScreenToNDC({ RenderRect.right, RenderRect.top });
+	VertexList[2].p = FMath::ScreenToNDC({ RenderRect.left, RenderRect.bottom });
+	VertexList[3].p = FMath::ScreenToNDC({ RenderRect.right, RenderRect.bottom });
+
+
 	//if (bAnim) {
 	//	AnimTime = (AnimTime + DeltaTime);
 	//	if (AnimTime >= AnimLength)AnimTime -= static_cast<float>(AnimLength);

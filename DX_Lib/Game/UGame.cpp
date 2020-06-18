@@ -13,7 +13,6 @@
 #include "DX_Header.h"
 #include "DataTable.h"
 
-
 #include <Windows.h>
 #include <string_view>
 #include <helper.h>
@@ -72,12 +71,11 @@ bool UGame::Init()
 	DX::Safe_Release(Surface);
 
 	auto Player = UWorld::Instance().CreateActor<APlayer>();
-
 	auto BackGround = UWorld::Instance().CreateActor<AActor>();
-	
+
 	BackGround->SetMesh(UWorld::Instance().CreateObject<UMesh>(BackGround));
 	BackGround->GetMesh()->Create(path::w::DefaultMapleResourcePath + L"Hennessy.bmp",
-		{ 0.f,0.f,800.f,600.f }, BackGround, UMesh::ELayer::BackGround);
+		{ 0.f,0.f,5830.f,3279.f }, BackGround, UMesh::ELayer::BackGround);
 	BackGround->SetLocation(FVector3{0,0,0});
 
 	return true;
