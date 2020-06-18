@@ -8,7 +8,6 @@
 #include <vector>
 #include <typeinfo>
 
-
 class AActor : public UObject
 {
 private:
@@ -19,6 +18,8 @@ private:
 	std::vector<class UObject*>ComponentList{};
 	FVector3 _Location{}; 
 	FVector3 Velocity{};
+	FVector3 _Scale{ 1.f,1.f,1.f };
+	float _Angle  {0.f};
 public:
 	virtual ~AActor()noexcept;
 	using Super = UObject; 
@@ -33,7 +34,22 @@ public:
 	void EraseComponent(UObjectType* _Object)&;
 
 	void SetMesh(class UMesh* Rhs) & noexcept;
-	
+
+	inline void SetScale(const FVector3 pScale) noexcept {
+		_Scale = pScale;
+	}
+	inline FVector3 GetScale() noexcept {
+		return _Scale;
+	};
+	inline void SetAngle(const float PAngle) noexcept {
+		_Angle = PAngle;
+	}
+	inline float GetAngle() noexcept {
+		return _Angle;
+	};
+inline	void RotateZAxis(const float Radian) {
+		SetAngle(Radian + GetAngle());
+	}
 	inline FVector3 GetVelocity() noexcept {
 		return Velocity;
 	}; 

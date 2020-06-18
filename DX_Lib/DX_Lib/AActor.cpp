@@ -8,7 +8,7 @@
 bool AActor::Init() noexcept
 {
 	return true;
-}
+};
 
 bool AActor::Release() noexcept
 {
@@ -27,13 +27,13 @@ bool AActor::Release() noexcept
 	_Collision = nullptr;
 
 	return true;
-}
+};
 
-bool AActor::Frame(float DeltaTime )
+bool AActor::Frame(float DeltaTime)
 {
-	
+
 	return true;
-}
+};
 
 bool AActor::Render(float DeltaTime)
 {
@@ -53,15 +53,14 @@ void AActor::SetMesh(class UMesh* Rhs) & noexcept {
 	};
 };
 
-
 void AActor::MoveForward( float DeltaTime) {
 	auto Position = GetLocation();
-	Position.y += Velocity.y * DeltaTime;
+	Position.y -= Velocity.y * DeltaTime;
 	SetLocation(Position);
 }
 void AActor::MoveBackward( float DeltaTime) {
 	auto Position = GetLocation();
-	Position.y -= Velocity.y * DeltaTime;
+	Position.y += Velocity.y * DeltaTime;
 	SetLocation(Position);
 }
 void AActor::MoveRight( float DeltaTime) {

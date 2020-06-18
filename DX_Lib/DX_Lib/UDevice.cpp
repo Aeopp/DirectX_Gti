@@ -15,6 +15,8 @@ bool UDevice::SetD3DDevice(const UINT width, const UINT height) &{
 	if (CreateViewport() == false)
 		return false;
 
+
+
 	return true;
 }
 

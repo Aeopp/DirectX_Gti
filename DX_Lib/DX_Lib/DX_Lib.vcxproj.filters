@@ -54,6 +54,15 @@
     <ClCompile Include="AActor.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="UMeshData.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="UAnimationMesh.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="FVector.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SingleTon.h">
@@ -114,6 +123,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="AActor.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="UMeshData.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="UAnimationMesh.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

@@ -6,7 +6,6 @@ using namespace std::string_view_literals;
 using namespace std::string_literals;
 
 // TODO :: 교체해주세요
-
 namespace path {
 	namespace s {
 		static inline const std::string DefaultResourcePath{ "..\\..\\..\\Resource\\" };
@@ -15,6 +14,10 @@ namespace path {
 	}
 	namespace w {
 		static inline const std::wstring DefaultResourcePath{ L"..\\..\\..\\Resource\\" };
+		static inline const std::wstring DefaultMapleResourcePath{ 
+			L"..\\..\\..\\Resource\\MapleData\\Texture\\" };
+		static inline const std::wstring DefaultPlayerPath
+		{ L"..\\..\\..\\Resource\\\\MapleData\\Texture\\Animation\\Player\\" }; 
 		static inline const std::wstring IMAGE = L"Lin.png";
 	}
 }

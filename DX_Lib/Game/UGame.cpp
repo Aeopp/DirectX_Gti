@@ -8,6 +8,7 @@
 #include "UWorld.h"
 #include "APlayer.h"
 #include "UMesh.h"
+#include "UMeshData.h"
 
 #include "DX_Header.h"
 #include "DataTable.h"
@@ -25,8 +26,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	}
 }
 
-bool UGame::Render(float DeltaTime)
-{
+bool UGame::Render(float DeltaTime){
 	return true; 
 }
 
@@ -38,12 +38,33 @@ bool UGame::Init()
 	UInput::Instance().EventRegist(
 		[SoundPath = path::s::DefaultResourcePath +path::s::TimeGame](float) {
 		USound::Instance().Play(SoundPath,true);
-	},EKeyState::Press, DIK_F1);
+	},EKeyState::Press, DIK_F5);
 
 	UInput::Instance().EventRegist(
 		[SoundPath = path::s::DefaultResourcePath + path::s::WhenTheMorningComess](float) {
 		USound::Instance().Play(SoundPath,true);
-	}, EKeyState::Press, DIK_F2);
+	}, EKeyState::Press, DIK_F6);
+
+	UInput::Instance().EventRegist([](float) {
+		UMeshData::ApplyRastrizerState(UDevice::Instance().GetContext(),
+			UMeshData::RSWireFrameBack);
+	}, EKeyState::Press, DIK_F6);
+
+	UInput::Instance().EventRegist([](float) {
+		UMeshData::ApplyRastrizerState(UDevice::Instance().GetContext(),
+			UMeshData::RSSolidNone);
+		}, EKeyState::Press, DIK_F7);
+
+
+	UInput::Instance().EventRegist([](float) {
+		UMeshData::ApplyRastrizerState(UDevice::Instance().GetContext(),
+			UMeshData::RSSolidFront);
+		}, EKeyState::Press, DIK_F8);
+
+	UInput::Instance().EventRegist([](float) {
+		UMeshData::ApplyRastrizerState(UDevice::Instance().GetContext(),
+			UMeshData::RSSolidBack);
+		}, EKeyState::Press, DIK_F9);
 
 	IDXGISurface* Surface = nullptr;
 	UDevice::Instance().SwapChain->GetBuffer(0,__uuidof(IDXGISurface),(void**)&Surface);
@@ -51,7 +72,13 @@ bool UGame::Init()
 	DX::Safe_Release(Surface);
 
 	auto Player = UWorld::Instance().CreateActor<APlayer>();
-	Player->SetLocation({500.f,500.0f,0.f});
+
+	auto BackGround = UWorld::Instance().CreateActor<AActor>();
+	
+	BackGround->SetMesh(UWorld::Instance().CreateObject<UMesh>(BackGround));
+	BackGround->GetMesh()->Create(path::w::DefaultMapleResourcePath + L"Hennessy.bmp",
+		{ 0.f,0.f,800.f,600.f }, BackGround, UMesh::ELayer::BackGround);
+	BackGround->SetLocation(FVector3{0,0,0});
 
 	return true;
 }
