@@ -22,12 +22,6 @@ bool CBullet::Init()
 
 	SetTexture(L"BulletLeft", L"Skill_1.bmp");
 	m_pTexture->SetColorKey(RGB(255, 0, 255));
-	
-	/*CColliderRect* pRC = AddCollider<CColliderRect>(L"Bullet");
-	pRC->SetRect(-184.5f, -58.f, 184.5f, 58.f);
-	SAFE_RELEASE(pRC);*/
-	//CColliderRect* pRC = AddCollider<CColliderRect>(L"Bullet");
-	// 369 116
 
 	return true;
 }
@@ -76,19 +70,13 @@ void CBullet::Hit(CObj* const pDest, float fDeltaTime)
 	CObj::Hit(pDest,fDeltaTime);
 	
 	if (GetTag() == L"PlayerBullet"
-		&& pDest->GetTag() == L"Mushroom"   ){
+		&& pDest->GetTag() == L"Mushroom") {
 		Die();
 	}
 	else if (GetTag() == L"MushroomBullet"
-		&&pDest->GetTag() == L"Player") {
+		&& pDest->GetTag() == L"Player") {
 		Die();
-	}
-	//if (Target->GetTag() == this->GetTag()) {
-
-	//}
-	//else {
-	//	Die();
-	//}
+	};
 }
 
 CBullet* CBullet::Clone()

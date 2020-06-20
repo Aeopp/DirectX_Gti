@@ -2,6 +2,7 @@
 #include "Texture.h"
 #include "CCore.h"
 #include "Camera.h"
+#include "D3DTexture.h"
 
 CStage::CStage():
 	CStaticObj()
@@ -43,16 +44,37 @@ bool CStage::Init()
 
 void CStage::Render(HDC hDC, float fDeltaTime)
 {
+
+
+
 	// CStaticObj::Render(hDC, fDeltaTime);
+	POSITION tPos = m_tPos - m_tSize * m_tPivot;
+	POSITION tCamPos = GET_SINGLE(CCamera)->GetPos();
+	RESOLUTION ClientRect = GET_SINGLE(CCamera)->GetClientRect();
+	
+	if (_Texture != nullptr) {
+		// 원본 이미지
+		_Texture->SetDestRect({ 0,0,(FLOAT)ClientRect.iW,(FLOAT)ClientRect.iH });
 
-	if (m_pTexture) {
-		POSITION tPos = m_tPos - m_tSize * m_tPivot;
-		POSITION tCamPos = GET_SINGLE(CCamera)->GetPos();
+		_Texture->SetSrcRect({tCamPos.x,tCamPos.y,
+			tCamPos.x+ClientRect.iW,tCamPos.y+ClientRect.iH});
 
+		/*_Texture->SetSrcRect({
+			tCamPos.x,tCamPos.y, m_tSize.x- tCamPos.x ,m_tSize.y - tCamPos.y });*/
+
+
+		if (auto GFX = GET_SINGLE(CCore)->m_Graphics;
+			GFX != nullptr) {
+			GFX->GetMeshRef().Render(*_Texture);
+			//	_Mesh->Render(*_Texture);
+		}
+	}
+	/*if (m_pTexture) {
+		
 		BitBlt(hDC, tPos.x, tPos.y,
 			GETRESOLUTION.iW, GETRESOLUTION.iH, m_pTexture->GetDC(), tCamPos.x, tCamPos.y,
 			SRCCOPY);
-	}
+	}*/
 }
 
 

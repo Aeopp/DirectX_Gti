@@ -9,18 +9,28 @@
 #include "CAnimation.h"
 #include <algorithm>
 #include "Player.h"
+#include "D3DTexture.h"
+
+#include "Graphics.h"
 CObj::CObj() :
 	m_pTexture{ nullptr },
 	m_bIsPhysics{ false } ,
 	m_fGravityTime(0.f),
-	m_pAnimation{ nullptr}
-{};
+	m_pAnimation{ nullptr}{
+	// Mesh 는 그래픽스가 초기화를 담당
+	_Texture = new Texture();
+};
 
 // Memory Leak Dected!! 
 CObj::~CObj(){
 	SAFE_RELEASE(m_pAnimation);
 	Safe_Release_VecList(m_ColliderList);
 	SAFE_RELEASE(m_pTexture);
+
+	if (_Texture) {
+	     // _Texture->Release();  
+		//delete _Texture;
+	}
  	/*SAFE_DELETE(m_pScene);
 	SAFE_DELETE(m_pLayer); */
 }
@@ -46,11 +56,7 @@ CObj::CObj(const CObj & Obj)
 		pColl->SetObj(this);
 		m_ColliderList.push_back(pColl);
 	}
-	/*for (auto Object : Obj.m_CollinderList){
-		auto* pCollider = Object->Clone();
-		pCollider->SetObj(this);
-		m_CollinderList.push_back(pCollider);
-	}*/
+	
 }
 
 void CObj::AddObj(CObj* pObj)
@@ -109,7 +115,6 @@ void CObj::EraseObj()
 {
 	Safe_Release_VecList(m_ObjList);
 }
-
 // 렌더이후에 출력해서 좌표 확인
 void CObj::DebugCollisionLinePrint(HDC hDC) {
 	auto Pos = GetPos();
@@ -188,7 +193,12 @@ CCollider* CObj::GetCollider(const wstring& strTag)
 	}
 	return nullptr;
 }
-bool CObj::AddAnimationClip(const wstring& strName, ANIMATION_TYPE eType, ANIMATION_OPTION eOption, float fAnimationLimitTime, int iFrameMaxX, int iFrameMaxY, int iStartX, int iStartY, int iLengthX, int iLengthY, float fOptionLimitTime, const wstring& strTexKey, const wchar_t* pFileName, const wstring& strPathKey)
+bool CObj::AddAnimationClip(const wstring& strName, 
+	ANIMATION_TYPE eType, ANIMATION_OPTION eOption,
+	float fAnimationLimitTime, int iFrameMaxX, int iFrameMaxY, 
+	int iStartX, int iStartY, int iLengthX, int iLengthY, 
+	float fOptionLimitTime, const wstring& strTexKey, 
+	const wchar_t* pFileName, const wstring& strPathKey)
 {
 	if(!m_pAnimation)
 	return false;
@@ -205,29 +215,28 @@ bool CObj::AddAnimationClip(const wstring& strName, ANIMATION_TYPE eType, ANIMAT
 		strTexKey,
 		pFileName, strPathKey);
 
-
 	return true; 
 }
-bool CObj::AddAnimationClip(const wstring& strName, ANIMATION_TYPE eType, ANIMATION_OPTION eOption, float fAnimationLimitTime, int iFrameMaxX, int iFrameMaxY, int iStartX, int iStartY, int iLengthX, int iLengthY, float fOptionLimitTime, const wstring& strTexKey, const vector<wstring>& vecFileName, const wstring& strPathKey)
-{
-	if (!m_pAnimation)
-		return false;
-
-	m_pAnimation->AddClip(strName,
-		eType, eOption,
-		fAnimationLimitTime,
-		iFrameMaxX,
-		iFrameMaxY,
-		iStartX, iStartY,
-		iLengthX,
-		iLengthY,
-		fOptionLimitTime,
-		strTexKey,
-		vecFileName, strPathKey);
-
-
-	return true;
-}
+//bool CObj::AddAnimationClip(const wstring& strName, ANIMATION_TYPE eType, ANIMATION_OPTION eOption, float fAnimationLimitTime, int iFrameMaxX, int iFrameMaxY, int iStartX, int iStartY, int iLengthX, int iLengthY, float fOptionLimitTime, const wstring& strTexKey, const vector<wstring>& vecFileName, const wstring& strPathKey)
+//{
+//	if (!m_pAnimation)
+//		return false;
+//
+//	m_pAnimation->AddClip(strName,
+//		eType, eOption,
+//		fAnimationLimitTime,
+//		iFrameMaxX,
+//		iFrameMaxY,
+//		iStartX, iStartY,
+//		iLengthX,
+//		iLengthY,
+//		fOptionLimitTime,
+//		strTexKey,
+//		vecFileName, strPathKey);
+//
+//
+//	return true;
+//}
 void CObj::SetAnimationClipColorkey(const wstring& strClip, unsigned char r, unsigned char g, unsigned char b)
 {
 	if(m_pAnimation)
@@ -235,16 +244,26 @@ void CObj::SetAnimationClipColorkey(const wstring& strClip, unsigned char r, uns
 }
 
 
-void CObj::SetTexture(CTexture* pTexture){
-	SAFE_RELEASE(m_pTexture);
-	m_pTexture = pTexture;
-	if (pTexture)
-		pTexture->AddRef();
+void CObj::SetTexture(Texture* pTexture){
+	_Texture = pTexture;
+	/*SAFE_RELEASE(m_pTexture);
+	m_pTexture = pTexture;*/
+	/*if (pTexture)
+		pTexture->AddRef();*/
 }
 
 void CObj::SetTexture(const wstring& strKey, const wchar_t* pFileName, const wstring& strPathKey){
 		SAFE_RELEASE(m_pTexture);
 		m_pTexture = GET_SINGLE(CResourcesManager)->LoadTexture(strKey,pFileName,strPathKey);
+
+		if (auto GFX = GET_SINGLE(CCore)->m_Graphics;
+			GFX!=nullptr ) {
+			if (auto Device = GFX->GetDevice(); Device != nullptr) {
+
+				std::wstring path = GET_SINGLE(CPathManager)->GetFullPath(pFileName, strPathKey);
+				_Texture->LoadTexture(GET_SINGLE(CCore)->m_Graphics->GetDevice(), path);
+			}
+		}
 }
 
 void CObj::SetColorKey(unsigned char r, unsigned char g, unsigned char b)
@@ -298,8 +317,6 @@ int CObj::Update(float fDeltaTime)
 	if (m_pAnimation) {
 		m_pAnimation->Update(fDeltaTime);
 	}
-
-
 	return 0;
 }
 
@@ -307,25 +324,6 @@ int CObj::LateUpdate(float fDeltaTime)
 {
 	if (!m_bEnable)return 0;
 
-	/*list<CCollider*>::iterator iter;
-	list<CCollider*>::iterator iterEnd = m_ColliderList.end();
-
-	for (iter = m_ColliderList.begin(); iter != iterEnd; ) {
-		if (!(*iter)->GetEnable()) {
-			++iter;
-			continue;
-		}
-
-		(*iter)->LateUpdate(fDeltaTime);
-
-		if (!(*iter)->GetLife()) {
-			SAFE_RELEASE((*iter));
-			iter = m_ColliderList.erase(iter);
-			iterEnd = m_ColliderList.end();
-		}
-		else
-			++iter;
-	};*/
 
 	for (auto iter = HitList.begin(); iter != std::end(HitList);) {
 		if (iter->second == ECOLLISION_STATE::Release) {
@@ -408,10 +406,10 @@ void CObj::Render(HDC hDC, float fDeltaTime)
 	if (!m_bEnable)return;
 
 	POSITION tPos = m_tPos - m_tSize * m_tPivot;
-	tPos -= GET_SINGLE(CCamera)->GetPos();
+	POSITION CameraPos = GET_SINGLE(CCamera)->GetPos();
+	tPos -= CameraPos;
 
 	RESOLUTION tClientRect = GET_SINGLE(CCamera)->GetClientRect();
-
 	bool bInClient = true;
 
 	if (tPos.x + m_tSize.x < 0) {
@@ -427,8 +425,7 @@ void CObj::Render(HDC hDC, float fDeltaTime)
 		bInClient = false;
 	}
 
-	if (m_pTexture&& bInClient ) {
-
+	if (bInClient) {
 		POSITION tImagePos;
 
 		if (m_pAnimation) {
@@ -441,69 +438,28 @@ void CObj::Render(HDC hDC, float fDeltaTime)
 			}
 		}
 
-		tImagePos += m_tImageOffset;
-		
-		if (m_pTexture->bAlpha==true)
-		{
-			BLENDFUNCTION ftn;
-			ftn.BlendOp = AC_SRC_OVER;
-			ftn.BlendFlags = 0;
-			ftn.SourceConstantAlpha = 255;
-			ftn.AlphaFormat = AC_SRC_ALPHA;
-			AlphaBlend(hDC, tPos.x, tPos.y, m_tSize.x,
-				m_tSize.y,
-				m_pTexture->GetDC(), tImagePos.x, tImagePos.y, m_tSize.x, m_tSize.y, ftn);
-		}
-		else
-		{
-			if (m_pTexture->GetColorKeyEnable() == true) {
-				TransparentBlt(hDC, tPos.x, tPos.y, m_tSize.x,
-					m_tSize.y, m_pTexture->GetDC(), tImagePos.x, tImagePos.y,
-					m_tSize.x, m_tSize.y, m_pTexture->GetColorKey());
-			}
-			else {
-				BitBlt(hDC, tPos.x, tPos.y,
-					m_tSize.x, m_tSize.y, m_pTexture->GetDC(), tImagePos.x, tImagePos.y,
-					SRCCOPY);
-			}
-			/*BLENDFUNCTION ftn;
-			ftn.BlendOp = AC_SRC_OVER;
-			ftn.BlendFlags = 0;
-			ftn.SourceConstantAlpha = 255;
-			ftn.AlphaFormat = AC_SRC_OVER;
+		if (_Texture != nullptr) {
+			// 원본 이미지
+			RESOLUTION ClientRect{ GET_SINGLE(CCore)->GetResolution() };
+			_Texture->SetDestRect({ tPos.x,tPos.y,tPos.x + m_tSize.x,
+				m_tSize.y + tPos.y });
 
-			AlphaBlend(hDC, tPos.x, tPos.y, m_tSize.x,
-				m_tSize.y,
-				m_pTexture->GetDC(), tImagePos.x, tImagePos.y, m_tSize.x, m_tSize.y, ftn);*/
+			// _Texture->SetSrcRect({ 0,0,m_tSize.x,m_tSize.y });
+			_Texture->SetSrcRect({ tImagePos.x,tImagePos.y,tImagePos.x+m_tSize.x,tImagePos.y+m_tSize.y });
+
+			if (auto GFX = GET_SINGLE(CCore)->m_Graphics;
+				GFX != nullptr) {
+				GFX->GetMeshRef().Render(*_Texture);
+			}
 		}
 	}
 
-	//list<CCollider*>::iterator iter;
-	//list<CCollider*>::iterator iterEnd = m_ColliderList.end();
-
-	//for (iter = m_ColliderList.begin(); iter != iterEnd; ) {
-	//	if (!(*iter)->GetEnable()) {
-	//		++iter;
-	//		continue;
-	//	}
-
-	//	(*iter)->Render(hDC,fDeltaTime);
-
-	//	if (!(*iter)->GetLife()) {
-	//		SAFE_RELEASE((*iter));
-	//		iter = m_ColliderList.erase(iter);
-	//		iterEnd = m_ColliderList.end();
-	//	}
-	//	else
-	//		++iter;
-	//}
-
-	if (GET_SINGLE(CCore)->GetInst()->bDebug==true) {
+	if (GET_SINGLE(CCore)->GetInst()->bDebug == true) {
 		if (GetTag() == L"StageColl") {
-			DebugCollisionPrint(hDC);
+			DebugCollisionPrint(nullptr);
 		}
 		else {
-			DebugCollisionLinePrint(hDC);
+			DebugCollisionLinePrint(nullptr);
 		}
 	}
 }

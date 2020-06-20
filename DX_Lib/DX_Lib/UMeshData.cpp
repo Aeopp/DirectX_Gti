@@ -116,8 +116,6 @@ void UMeshData::Create(ID3D11Device* D3DDevice, ID3D11DeviceContext* D3DContext)
 	hr = D3DDevice->CreateBlendState(&bsd, &BlendState);
 
 	SetUpRSState();
-
-
 	if (IsValid(D3DDevice)) {
 		UMeshData::ApplyRastrizerState(D3DContext, UMeshData::RSSolidBack);
 		UMeshData::ApplyBlendState(D3DContext, UMeshData::BlendState);

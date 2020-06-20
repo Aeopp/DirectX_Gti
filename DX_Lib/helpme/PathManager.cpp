@@ -69,3 +69,15 @@ const char* CPathManager::FindPathMultiByte(const string& strKey)
 
 	return m_strPath;
 }
+
+std::wstring CPathManager::GetFullPath(const std::wstring& FileName, const std::wstring& PathKey
+)
+{
+  	const wchar_t * pPath = FindPath(PathKey);
+	std::wstring Path;
+	if (pPath) {
+		Path = pPath;
+	}
+	Path += FileName;
+	return Path;
+}

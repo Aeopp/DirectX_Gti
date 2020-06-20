@@ -1,6 +1,7 @@
 #pragma once
 #include "Flag.h"
 #include <vector>
+#include "D3DTexture.h"
 ;;;
 
 enum class EState :UINT8 {
@@ -196,7 +197,7 @@ enum class ECOLLISION_STATE :uint8_t {
 struct AnimationClip {
 	ANIMATION_TYPE eType;
 	ANIMATION_OPTION eOption;
-	std::vector<class CTexture*>vecTexture;
+	std::vector<Texture*>vecTexture;
 	float fAnimationTime;
 	float fAnimationLimitTime; 
 	float fAnimationFrameTime;

@@ -20,11 +20,8 @@ CUIButton::~CUIButton()
 
 bool CUIButton::Init()
 {
-	CColliderRect* pColl = AddCollider<CColliderRect>
-		(L"Button");
+	CColliderRect* pColl = AddCollider<CColliderRect>(L"Button");
 	SAFE_RELEASE(pColl);
-
-
 
 	return true;
 }

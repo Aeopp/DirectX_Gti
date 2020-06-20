@@ -2,12 +2,11 @@
 #include "Texture.h"
 #include "ResourcesManager.h"
 #include "Obj.h"
+#include "CCore.h"
 CAnimation::CAnimation():
 	m_pCurClip(NULL),
 	m_bMotionEnd{ false } 
-{
-
-}
+{}
 
 CAnimation::CAnimation(const CAnimation& anim)
 {
@@ -23,7 +22,7 @@ CAnimation::CAnimation(const CAnimation& anim)
 		*pClip = *iter->second;
 
 		for (size_t i = 0; i < pClip->vecTexture.size(); ++i) {
-			pClip->vecTexture[i]->AddRef(); 
+		//	pClip->vecTexture[i]->AddRef(); 
 		}
 	}
 
@@ -41,7 +40,12 @@ CAnimation::~CAnimation()
 	for (iter = m_mapClip.begin(); iter != iterEnd; ++iter) {
 
 		for (size_t i = 0; i < iter->second->vecTexture.size() ; ++i) {
-			SAFE_RELEASE(iter->second->vecTexture[i]); 
+
+			auto _Texture= iter->second->vecTexture[i];
+			if (_Texture) {
+				delete _Texture;
+			}
+			//SAFE_RELEASE(iter->second->vecTexture[i]); 
 		}
 
 		SAFE_DELETE(iter->second);
@@ -49,7 +53,14 @@ CAnimation::~CAnimation()
 	m_mapClip.clear(); 
 }
 
-bool CAnimation::AddClip(const wstring& strName, ANIMATION_TYPE eType, ANIMATION_OPTION eOption, float fAnimationLimitTime, int iFrameMaxX, int iFrameMaxY, int iStartX, int iStartY, int iLengthX, int iLengthY, float fOptionLimitTime, const wstring& strTexKey, const wchar_t* pFileName, const wstring&  strPathKey)
+bool CAnimation::AddClip(const wstring& strName, 
+	ANIMATION_TYPE eType, 
+	ANIMATION_OPTION eOption, 
+	float fAnimationLimitTime, 
+	int iFrameMaxX, int iFrameMaxY, int iStartX, 
+	int iStartY, int iLengthX, int iLengthY, 
+	float fOptionLimitTime, const wstring& strTexKey, 
+	const wchar_t* pFileName, const wstring&  strPathKey)
 {
 	PANIMATIONCLIP pClip = new ANIMATIONCLIP;
 
@@ -66,12 +77,22 @@ bool CAnimation::AddClip(const wstring& strName, ANIMATION_TYPE eType, ANIMATION
 	pClip->fAnimationFrameTime =
 		fAnimationLimitTime / (iLengthX * iLengthY);
 
-	CTexture* pTex = GET_SINGLE(CResourcesManager)->LoadTexture(strTexKey,
-		pFileName, strPathKey);
+
+	Texture* pTex = new Texture{};
+
+	if (auto GFX = GET_SINGLE(CCore)->m_Graphics;
+		GFX != nullptr) {
+		if (auto Device = GFX->GetDevice(); Device != nullptr) {
+
+			std::wstring path = GET_SINGLE(CPathManager)->GetFullPath(pFileName, strPathKey);
+			pTex->LoadTexture(GET_SINGLE(CCore)->m_Graphics->GetDevice(), path);
+		}
+	}
+	//CTexture* pTex = GET_SINGLE(CResourcesManager)->LoadTexture(strTexKey,
+	//	pFileName, strPathKey);
 
 	pClip->tFrameSize.x = pTex->GetWidth()/iFrameMaxX;
-	pClip->tFrameSize.y = pTex->GetHeight()
-		/iFrameMaxY;
+	pClip->tFrameSize.y = pTex->GetHeight()/iFrameMaxY;
 
 	pClip->vecTexture.push_back(pTex);
 
@@ -88,69 +109,65 @@ bool CAnimation::AddClip(const wstring& strName, ANIMATION_TYPE eType, ANIMATION
 	if(m_strCurClip.empty()){
 		SetCurrentClip(strName);
 	}
-	
-
 	return true;
 }
-bool CAnimation::AddClip(const wstring& strName, ANIMATION_TYPE eType, ANIMATION_OPTION eOption, float fAnimationLimitTime, int iFrameMaxX, int iFrameMaxY, int iStartX, int iStartY, int iLengthX, int iLengthY, float fOptionLimitTime, const wstring& strTexKey, const vector<wstring >& vecFileName, const wstring& strPathKey)
-{
-	PANIMATIONCLIP pClip = new ANIMATIONCLIP;
-
-	pClip->eType = eType;
-	pClip->eOption = eOption;
-	pClip->fAnimationLimitTime = fAnimationLimitTime;
-	pClip->iFrameMaxX = iFrameMaxX;
-	pClip->iFrameMaxY = iFrameMaxY;
-	pClip->iStartX = iStartX;
-	pClip->iStartY = iStartY;
-	pClip->iLengthX = iLengthX;
-	pClip->iLengthY = iLengthY;
-	pClip->fOptionLimitTime = fOptionLimitTime;
-	pClip->fAnimationFrameTime =
-		fAnimationLimitTime / (iLengthX * iLengthY);
-
-	for (size_t i = 0; i < vecFileName.size(); ++i) {
-		char strKey[256] = {};
-
-		sprintf_s(strKey, "%s%d", strTexKey.c_str(), i + 1);
-		CTexture* pTex = GET_SINGLE(CResourcesManager)->LoadTexture(strTexKey,
-			vecFileName[i].c_str(), strPathKey);	
-		
-		pClip->vecTexture.push_back(pTex);
-	}
-
-	pClip->tFrameSize.x = pClip->vecTexture[0]->GetWidth() / iFrameMaxX;
-	pClip->tFrameSize.y = pClip->vecTexture[0]->GetHeight()
-		/ iFrameMaxY;
-
-
-	pClip->fAnimationTime = 0.f;
-	pClip->iFrameX = iStartX;
-	pClip->iFrameY = iStartY;
-	pClip->fOptionTime = 0.f;
-
-	m_mapClip.insert(std::make_pair(strName, pClip));
-
-	if (m_strDefaultClip.empty()) {
-		SetDefaultClip(strName);
-	}
-	if (m_strCurClip.empty()) {
-		SetCurrentClip(strName);
-	}
-	return true;
-}
-void CAnimation::SetClipColorkey(const wstring& strClip , unsigned char r, unsigned char g, unsigned char b)
+//bool CAnimation::AddClip(
+//const wstring& strName, ANIMATION_TYPE eType, ANIMATION_OPTION eOption,
+//float fAnimationLimitTime, int iFrameMaxX, int iFrameMaxY, int iStartX, 
+//int iStartY, int iLengthX, int iLengthY, float fOptionLimitTime,
+//const wstring& strTexKey, const vector<wstring >& vecFileName, 
+//const wstring& strPathKey)
+//{
+//	PANIMATIONCLIP pClip = new ANIMATIONCLIP;
+//
+//	pClip->eType = eType;
+//	pClip->eOption = eOption;
+//	pClip->fAnimationLimitTime = fAnimationLimitTime;
+//	pClip->iFrameMaxX = iFrameMaxX;
+//	pClip->iFrameMaxY = iFrameMaxY;
+//	pClip->iStartX = iStartX;
+//	pClip->iStartY = iStartY;
+//	pClip->iLengthX = iLengthX;
+//	pClip->iLengthY = iLengthY;
+//	pClip->fOptionLimitTime = fOptionLimitTime;
+//	pClip->fAnimationFrameTime =fAnimationLimitTime / (iLengthX * iLengthY);
+//
+//	for (size_t i = 0; i < vecFileName.size(); ++i) {
+//		char strKey[256] = {};
+//
+//		sprintf_s(strKey, "%s%d", strTexKey.c_str(), i + 1);
+//		CTexture* pTex = GET_SINGLE(CResourcesManager)->LoadTexture(strTexKey,
+//			vecFileName[i].c_str(), strPathKey);	
+//		
+//		pClip->vecTexture.push_back(pTex);
+//	}
+//
+//	pClip->tFrameSize.x = pClip->vecTexture[0]->GetWidth() / iFrameMaxX;
+//	pClip->tFrameSize.y = pClip->vecTexture[0]->GetHeight()
+//		/ iFrameMaxY;
+//
+//	pClip->fAnimationTime = 0.f;
+//	pClip->iFrameX = iStartX;
+//	pClip->iFrameY = iStartY;
+//	pClip->fOptionTime = 0.f;
+//
+//	m_mapClip.insert(std::make_pair(strName, pClip));
+//
+//	if (m_strDefaultClip.empty()) {
+//		SetDefaultClip(strName);
+//	}
+//	if (m_strCurClip.empty()) {
+//		SetCurrentClip(strName);
+//	}
+//	return true;
+//}
+void CAnimation::SetClipColorkey(const wstring& strClip ,
+	unsigned char r, unsigned char g, unsigned char b)
 {
 	PANIMATIONCLIP pClip = FindClip(strClip);
 
 	if (!pClip)return;
-
-	for (size_t i = 0; i < pClip->vecTexture.size(); ++i) {
-		pClip->vecTexture[i]->SetColorKey(r, g, b);
-	}
-	
 }
-
 
 void CAnimation::SetCurrentClip(const wstring& strCurClip)
 {
@@ -184,7 +201,6 @@ void CAnimation::ChangeClip(const wstring& strClip)
 
 	if(m_pCurClip->eType==AT_ATLAS)
 	m_pObj->SetTexture(m_pCurClip->vecTexture[0]);
-
 
 	if (m_pCurClip->eType == AT_FRAME)
 		m_pObj->SetTexture(m_pCurClip->vecTexture[m_pCurClip->iFrameY/*iFrameY*/]);
@@ -255,8 +271,6 @@ void CAnimation::Update(float fTime)
 				m_pObj->SetTexture(m_pCurClip->vecTexture[m_pCurClip->iFrameY/*iFrameY*/]);
 		}
 	}
-	
-
 }
 
 CAnimation* CAnimation::Clone()

@@ -14,7 +14,6 @@ private:
 	virtual ~UAnimationMesh()noexcept;
 	DECLARE_DELETE_MOVE_COPY(UAnimationMesh);
 };
-
 // 필요한 정보 1
 // 애니메이션 장수
 // 

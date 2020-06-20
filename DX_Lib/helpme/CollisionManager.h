@@ -1,5 +1,5 @@
 #pragma once
-#include "Game.h"
+#include "helper.h"
 
 class CCollisionManager {
 private:

@@ -13,16 +13,18 @@ CResourcesManager::~CResourcesManager() {
 }
 
  CTexture* CResourcesManager::GetBackBuffer() const {
-	m_pBackBuffer->AddRef();
-	return m_pBackBuffer;
+	/*m_pBackBuffer->AddRef();
+	return m_pBackBuffer;*/
+	 return nullptr;
+
 }
 
 bool CResourcesManager::Init(HINSTANCE hInst, HDC hDC)
 {
-	m_hDC = hDC;
+	//m_hDC = hDC;
 	m_hInst = hInst; 
 
-	 m_pBackBuffer   = LoadTexture(L"BackBuffer", L"BackBuffer.bmp");
+	 //m_pBackBuffer   = LoadTexture(L"BackBuffer", L"BackBuffer.bmp");
 
 	return true ;
 }

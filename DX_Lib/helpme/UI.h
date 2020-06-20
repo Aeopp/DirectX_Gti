@@ -33,8 +33,6 @@ public:
     virtual ~CUI() = 0;
 	BUTTON_STATE m_eState = BS_NONE;
 	bool bBorder = true; 
-
-
 	void ClampPos() override;
 
 	virtual void MouseOnEvent(CObj* const Target, float fDeltaTime);

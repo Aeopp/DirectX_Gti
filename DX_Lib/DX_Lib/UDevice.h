@@ -32,9 +32,9 @@ public :
 	bool ReleaseDevice();
 	
 	// 디바이스 사용자는 DX API 자원 관리 방법을 지정해줄수도 디폴트로 냅둘수도 있다.
-	std::function<void() > CreateDXResource    { std::bind(&UDevice::DefaultCreateDXResource, this) };
-	std::function<void() > DeleteDXResource    { std::bind(&UDevice::DefaultDeleteDXResource, this)};
-	std::function<void(UINT,UINT)> ResizeDevice{ std::bind(&UDevice::DefaultResizeDevice,     this, _1, _2)};
+	std::function<void() >	         CreateDXResource    { std::bind(&UDevice::DefaultCreateDXResource, this) };
+	std::function<void() >	         DeleteDXResource    { std::bind(&UDevice::DefaultDeleteDXResource, this)};
+	std::function<void(UINT,UINT)>   ResizeDevice{ std::bind(&UDevice::DefaultResizeDevice,     this, _1, _2)};
 private:
 	void DefaultCreateDXResource()&;
 	void DefaultDeleteDXResource()&;

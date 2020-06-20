@@ -13,8 +13,8 @@ cbuffer cb : register(b0)
 void PS(in  float4 pos : SV_POSITION,
 	in  float4 color : COLOR0,
 	in  float2 text_coord : TEXCOORD0,
-	out float4 target : SV_Target)
-{
+	out float4 target : SV_Target){
+
 	float4 color1 = text1.Sample(pixelSample1, text_coord);
 	
 	if (color1.r >= 1.0f &&

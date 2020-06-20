@@ -27,7 +27,7 @@ void CCore::DestroyInst() {
 	DESTROY_SINGLE(CPathManager);
 	DESTROY_SINGLE(CTimer);
 
-	ReleaseDC(m_hWnd, m_hDC);
+	//ReleaseDC(m_hWnd, m_hDC);
 
 #ifdef _DEBUG
 	FreeConsole();
@@ -43,7 +43,7 @@ bool CCore::Init(HINSTANCE hInst)
 	m_tRS.iH = 720;
 	Create();
 
-	m_hDC = GetDC(m_hWnd);
+//	m_hDC = GetDC(m_hWnd);
 
 	if (!GET_SINGLE(CTimer)->Init(m_hWnd)){
 		return false;
@@ -51,9 +51,17 @@ bool CCore::Init(HINSTANCE hInst)
 	if (!GET_SINGLE(CPathManager)->Init()){
 		return false;
 	}
-	if (!GET_SINGLE(CResourcesManager)->Init(hInst,m_hDC)) {
+	if (!GET_SINGLE(CResourcesManager)->Init(hInst,nullptr)) {
 		return false;
 	}
+	// DX2D Graphic Init
+	{
+		RECT ClientRect;
+		GetClientRect(m_hWnd, &ClientRect);
+		m_Graphics = new Graphics(m_hWnd, ClientRect.right, ClientRect.bottom);
+		m_Graphics->Initialzie();
+	}
+
 	if (!GET_SINGLE(CInput)->Init(m_hWnd)) {
 		return false;
 	}
@@ -61,9 +69,10 @@ bool CCore::Init(HINSTANCE hInst)
 		m_tRS, RESOLUTION(Stage::SizeWidth, Stage::SizeHeight))){
 		return false; 
 	}
+
 	if (!GET_SINGLE(CSceneManager)->Init()) {
-		return false; 
-	}
+		return false;
+	};
 	return true ;
 }
 
@@ -73,7 +82,7 @@ int CCore::Run()
 	while (m_bLoop) {
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
 			TranslateMessage(&msg); 
-		DispatchMessage(&msg);
+			DispatchMessage(&msg);
 		}
 		else {
 			Logic();
@@ -93,6 +102,21 @@ LRESULT CCore::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		EndPaint(hWnd, &ps);
 		break;
+	}
+	case WM_SIZE: {
+		if (auto Core = GET_SINGLE(CCore); Core != nullptr) {
+			if (Core->m_Graphics) {
+				if (auto Camera = GET_SINGLE(CCamera);
+					Camera) {
+					RECT ClientRect;
+					GetClientRect(m_hWnd, &ClientRect);
+					Core->m_Graphics->SetScreenSize(ClientRect.right, ClientRect.bottom);
+					Core->m_Graphics->Resize();
+					Camera->SetClientResolution(ClientRect.right, ClientRect.bottom);
+				}
+			}
+		}
+		break; 
 	}
 	case WM_DESTROY:
 	{
@@ -141,7 +165,7 @@ SCENE_CHANGE CCore::Update(float fDeltaTime)
 	SCENE_CHANGE sc;
 
 	sc = GET_SINGLE(CSceneManager)->Update(fDeltaTime);
-	GET_SINGLE(CCamera)->Update(m_hDC,fDeltaTime);
+	GET_SINGLE(CCamera)->Update(nullptr,fDeltaTime);
 	return sc;
 }
 
@@ -245,44 +269,7 @@ void CCore::Collision(float fDeltaTime)
 					//MessageBox(NULL, LhsTag.c_str(), RhsTag.c_str(),MB_OK);
 				}
 			}
-			/*else if ( ((*Inner)->GetCollisionTag() == ECollision_Tag::Rect &&
-				     (*Outer)->GetCollisionTag() == ECollision_Tag::Pixel  )
-						) {
-				auto LhsRect = (*Inner)->GetCollisionRect();
-				CPixel* RhsPixel = static_cast<CPixel*>(*Outer);
-					auto _Pixel = 	RhsPixel->GetPixel();
-
-				if (true == CollisionRectToPixel(LhsRect, _Pixel, RhsPixel->GetWidth(),
-					RhsPixel->GetHeight())) {
-					auto LhsTag = (*Inner)->GetTag();
-					auto RhsTag = (*Outer)->GetTag();
-
-					if (LhsTag == L"Stage" || RhsTag == L"Stage")continue;
-
-					(*Inner)->Hit(*Outer, fDeltaTime);
-					(*Outer)->Hit(*Inner, fDeltaTime);
-					MessageBox(NULL, LhsTag.c_str(), RhsTag.c_str(),MB_OK);
-				}
-			}
-			else if (((*Outer)->GetCollisionTag() == ECollision_Tag::Rect &&
-			(*Inner)->GetCollisionTag() == ECollision_Tag::Pixel)
-			) {
-			auto LhsRect = (*Outer)->GetCollisionRect();
-			CPixel* RhsPixel = static_cast<CPixel*>(*Inner);
-			auto _Pixel = RhsPixel->GetPixel();
-
-			if (true == CollisionRectToPixel(LhsRect, _Pixel,RhsPixel->GetWidth(),
-				RhsPixel->GetHeight())) {
-				auto LhsTag = (*Inner)->GetTag();
-				auto RhsTag = (*Outer)->GetTag();
-
-				if (LhsTag == L"Stage" || RhsTag == L"Stage")continue;
-
-				(*Inner)->Hit(*Outer, fDeltaTime);
-				(*Outer)->Hit(*Inner, fDeltaTime);
-				MessageBox(NULL, LhsTag.c_str(), RhsTag.c_str(),MB_OK);
-			    }
-			}*/
+		
 		}
 	}
 
@@ -305,21 +292,18 @@ void CCore::Collision(float fDeltaTime)
 
 void CCore::Render(float fDeltaTime)
 {
-	CTexture* pBackBuffer = GET_SINGLE(CResourcesManager)->GetBackBuffer();
+	if (m_Graphics) m_Graphics->PreRender();
+	
+	//CTexture* pBackBuffer = GET_SINGLE(CResourcesManager)->GetBackBuffer();
 
 	//Rectangle(pBackBuffer->GetDC(), 0, 0, GETRESOLUTION.iW, GETRESOLUTION.iH);
-	//
-	GET_SINGLE(CSceneManager)->Render(pBackBuffer->GetDC(),fDeltaTime);
+	GET_SINGLE(CSceneManager)->Render(nullptr,fDeltaTime);
 
 	CMouse* pMouse = GET_SINGLE(CInput)->GetMouse();
 
-	pMouse->Render(pBackBuffer->GetDC(),
-		fDeltaTime);
+	pMouse->Render(nullptr,fDeltaTime);
 
-	BitBlt(m_hDC, 0, 0, GETRESOLUTION.iW, GETRESOLUTION.iH, pBackBuffer->GetDC(),
-		0, 0, SRCCOPY);
-
-	SAFE_RELEASE(pBackBuffer); 
+	 if (m_Graphics)m_Graphics->PostRender();
 }
 
 bool CCore::CollisionRectToRect(const RECTANGLE& src, const RECTANGLE& dest)
@@ -433,6 +417,7 @@ ATOM CCore::MyRegisterClass()
 
 BOOL CCore::Create()
 {
+
 	m_hWnd = CreateWindowW(L"MapleStory", L"MapleStory", WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr,
 		m_hInst, nullptr);
@@ -440,8 +425,11 @@ BOOL CCore::Create()
 		if (!m_hWnd) {
 			return FALSE;
 		}
+		 UINT WindowWidth = GETRESOLUTION.iW;
+		 UINT WindowHeight = GETRESOLUTION.iH;
 
-		RECT rc = { 0,0,GETRESOLUTION.iW,GETRESOLUTION.iH};
+
+		RECT rc = { 0,0,WindowWidth,WindowHeight };
 		AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
 		SetWindowPos(m_hWnd, HWND_TOPMOST, 100, 100,
@@ -466,6 +454,9 @@ CCore::CCore()
 
 CCore::~CCore() noexcept
 {
+	if (m_Graphics != nullptr) {
+		delete m_Graphics;
+	}
 	/*DESTROY_SINGLE(CCore);
 	DESTROY_SINGLE(CTimer);*/
 	//DESTROY_SINGLE(CTimer);

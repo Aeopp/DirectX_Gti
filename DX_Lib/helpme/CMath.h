@@ -1,5 +1,5 @@
 #pragma once
-#include "Game.h"
+#include "helper.h"
 #include <random>
 class CMath
 {

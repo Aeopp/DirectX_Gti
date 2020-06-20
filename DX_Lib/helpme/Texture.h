@@ -36,7 +36,7 @@ public:
 	~CTexture();
 	bool LoadTexture(HINSTANCE hInst,HDC hDC,
 	const wstring& strKey , const wchar_t*
-	pFileName , const wstring& strPathKey=TEXTURE_PATH );      
+	pFileName , const wstring& strPathKey=TEXTURE_PATH );
 	HDC GetDC()const {
 		return m_hMemDC;
 	}

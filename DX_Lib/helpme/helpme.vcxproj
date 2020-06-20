@@ -151,7 +151,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Bar.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CAnimation.cpp" />
@@ -173,6 +172,7 @@
     <ClCompile Include="DamagePont.cpp" />
     <ClCompile Include="Dungeon.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameStartButton.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Layer.cpp" />
@@ -202,7 +202,6 @@
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Bar.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CAnimation.h" />
@@ -210,7 +209,6 @@
     <ClInclude Include="CDungeon2.h" />
     <ClInclude Include="CDungeonScecne.h" />
     <ClInclude Include="CDungeonScene2.h" />
-    <ClInclude Include="CEliniaScene.h" />
     <ClInclude Include="CHPBar.h" />
     <ClInclude Include="CIngameScene.h" />
     <ClInclude Include="CMath.h" />
@@ -225,7 +223,8 @@
     <ClInclude Include="DataTable.h" />
     <ClInclude Include="Dungeon.h" />
     <ClInclude Include="Flag.h" />
-    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameStartButton.h" />
+    <ClInclude Include="helper.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Layer.h" />

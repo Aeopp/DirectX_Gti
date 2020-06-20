@@ -21,6 +21,9 @@
   <ItemGroup>
     <None Include="FramebufferPS.shh" />
     <None Include="FramebufferVS.shh" />
+    <None Include="DirectXTex.inl">
+      <Filter>헤더 파일</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphics.cpp">
@@ -38,10 +41,10 @@
     <ClCompile Include="SoundEffect.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
+    <ClCompile Include="Writer.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Writer.cpp">
+    <ClCompile Include="D3DTexture.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -61,10 +64,13 @@
     <ClInclude Include="SoundEffect.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
+    <ClInclude Include="Writer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Writer.h">
+    <ClInclude Include="D3DTexture.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXTex.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

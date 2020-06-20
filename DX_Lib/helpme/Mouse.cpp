@@ -11,7 +11,6 @@ CMouse::CMouse(const CMouse& mouse):
 	CUI(mouse )
 {
 	CollisionTag = L"Mouse";
-
 }
 
 CMouse::~CMouse()
@@ -42,14 +41,10 @@ int CMouse::Update(float fDeltaTime)
 	GetCursorPos(&pt);
 	ScreenToClient(WINDOWHANDLE, &pt);
 
-	ShowCursor(false); 
-
 	m_tMove.x = pt.x - m_tPos.x;
 	m_tMove.y = pt.y - m_tPos.y; 
 
 	m_tPos = pt;
-
-	//CColliderPoint* pColl = AddCollider<CColliderPoint>(L"Mouse");
 	return 0;
 }
 

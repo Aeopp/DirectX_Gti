@@ -25,7 +25,8 @@ CTexture::~CTexture()
 
 bool CTexture::LoadTexture(HINSTANCE hInst, HDC hDC,
 	const wstring& strKey, const wchar_t*
-	pFileName, const wstring& strPathKey)
+	pFileName, const wstring& strPathKey 
+	)
 {
 	m_hMemDC = CreateCompatibleDC(hDC);
 	auto pPath = GET_SINGLE(CPathManager)->FindPath(strPathKey);
@@ -33,12 +34,15 @@ bool CTexture::LoadTexture(HINSTANCE hInst, HDC hDC,
 	if (pPath)
 		strPath = pPath;
 	strPath += pFileName; 
-	m_hBitmap = (HBITMAP)LoadImage(hInst, strPath.c_str(),
+
+	
+
+	/*m_hBitmap = (HBITMAP)LoadImage(hInst, strPath.c_str(),
 		IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 
-	m_hOldBitmap = (HBITMAP)SelectObject(m_hMemDC, m_hBitmap);
+	m_hOldBitmap = (HBITMAP)SelectObject(m_hMemDC, m_hBitmap);*/
 
-	GetObject(m_hBitmap, sizeof(m_tInfo), &m_tInfo);
+	//GetObject(m_hBitmap, sizeof(m_tInfo), &m_tInfo);
 
 	return true; 
 }

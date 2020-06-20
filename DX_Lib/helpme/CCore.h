@@ -1,8 +1,9 @@
 #pragma once
-#include "Game.h"
+#include "helper.h"
 #include "PathManager.h"
 #include "Types.h"
 #include <random>
+#include "Graphics.h"
 class CCore
 {
 private:
@@ -10,12 +11,11 @@ private:
 	static inline bool m_bLoop = true;
 	static inline HINSTANCE m_hInst;
 	static inline HWND m_hWnd;
-	static inline HDC m_hDC;
+	//static inline HDC m_hDC;
 	RESOLUTION m_tRS;
 public:
-	CCore(HINSTANCE hInst) {
+	class Graphics* m_Graphics{ nullptr };
 
-	};
 	bool bDebug = false; 
 	RESOLUTION GetResolution()const {
 		return m_tRS;
@@ -23,11 +23,9 @@ public:
 	HWND GetWindowHandle()const {
 		return m_hWnd;
 	}
-
 	void DestroyGame(){
 		DestroyWindow(m_hWnd);
 	}
-
 	void Clear(); 
 	static CCore* GetInst() {
 		if (!m_pInst)

@@ -66,7 +66,6 @@ bool UMesh::Init() noexcept
 	HRESULT hr;
 
 	CreateVertexBuffer();
-
 	SetInputLayout();
 
 	//UINT stride = sizeof(PCT_VERTEX);
@@ -170,6 +169,7 @@ bool UMesh::Frame(float DeltaTime)
 
 bool UMesh::Render(float DeltaTime)
 {
+	// 그리기전에 좌표계 변환
 	UINT stride = sizeof(PCT_VERTEX);
 	UINT offset = 0;
 
@@ -188,9 +188,10 @@ bool UMesh::Render(float DeltaTime)
 	D3DContext->PSSetShaderResources(0, 1, &SRV);
 	D3DContext->PSSetSamplers(0, 1, &SamplerState);
 	D3DContext->OMSetBlendState(CurrentBlendState, 0, 0xffffff);
-	// 그리기전에 좌표계 변환
+
 	OwnerPositionTORenderRECT();
-	
+
+
 	// 갱신된 정점들로 업데이트
 	D3DContext->UpdateSubresource(VertexBuffer, 0, NULL, VertexList.data(), 0, 0);
 	D3DContext->UpdateSubresource(ConstantBuffer, 0, NULL, &ConstantData, 0, 0);

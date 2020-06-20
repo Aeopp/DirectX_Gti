@@ -37,10 +37,6 @@ void CPlayer::Attack()&
 		CurWeapon->bAttack = true;
 		CurWeapon->CollDown = 0.3f;
 	};
-
-	//GET_SINGLE(CTimer)->PushTimer(0.5f, ETimerState::ONCE, [this](float) {
-	////	MessageBox(WINDOWHANDLE, L"공격끝", L"공격끝", NULL);
-	//	CurWeapon->bAttack = false;  });
 };
 
 bool CPlayer::Init() {
@@ -172,20 +168,20 @@ bool CPlayer::Init() {
 		SetAnimationClipColorkey(L"PlayerAttack4Right", 255, 0, 255);
 	}
 
-	 //Death 
-	{
-		vector<wstring> vecFileName;
+	// //Death 
+	//{
+	//	vector<wstring> vecFileName;
 
-		for (int i = 1; i <= 5; ++i) {
-			wchar_t strFileName[MAX_PATH] = {};
-			wsprintf(strFileName, L"PlayerDeath", L"Animation\\Player\\Frame\\%d.bmp", i);
-			vecFileName.push_back(strFileName);
-		}
+	//	for (int i = 1; i <= 5; ++i) {
+	//		wchar_t strFileName[MAX_PATH] = {};
+	//		wsprintf(strFileName, L"PlayerDeath", L"Animation\\Player\\Frame\\%d.bmp", i);
+	//		vecFileName.push_back(strFileName);
+	//	}
 
-		AddAnimationClip(L"PlayerDeath", AT_FRAME, AO_ONCE_RETURN,
-			1.f, 1, 5, 0, 0, 1, 5, 0.f, L"PlayerDeath", vecFileName);
-		SetAnimationClipColorkey(L"PlayerDeath", 255, 0, 255);
-	}
+	///*	AddAnimationClip(L"PlayerDeath", AT_FRAME, AO_ONCE_RETURN,
+	//		1.f, 1, 5, 0, 0, 1, 5, 0.f, L"PlayerDeath", vecFileName);*/
+	//	SetAnimationClipColorkey(L"PlayerDeath", 255, 0, 255);
+	//}
 
 	SAFE_RELEASE(pAni);
 
@@ -389,81 +385,62 @@ void CPlayer::Render(HDC hDC, float fDeltaTime)
 		return; 
 	}
 
-	if (m_pTexture) {
+	CObj::Render(nullptr, fDeltaTime);
 
-		/*Rectangle(hDC, tPos.x, tPos.y, tPos.x + m_tSize.x, tPos.y + m_tSize.y);
-		*/
-		POSITION tPos = m_tPos - m_tSize * m_tPivot;
-		tPos -= GET_SINGLE(CCamera)->GetPos();
+	//if (m_pTexture) {
 
-		POSITION tImagePos;
+	//	/*Rectangle(hDC, tPos.x, tPos.y, tPos.x + m_tSize.x, tPos.y + m_tSize.y);
+	//	*/
+	//	POSITION tPos = m_tPos - m_tSize * m_tPivot;
+	//	tPos -= GET_SINGLE(CCamera)->GetPos();
 
-		if (m_pAnimation) {
-			PANIMATIONCLIP pClip =
-				m_pAnimation->GetCurrentClip();
+	//	POSITION tImagePos;
 
-			if (pClip->eType == AT_ATLAS) {
-				tImagePos.x = pClip->iFrameX * pClip->tFrameSize.x;
-				tImagePos.y = pClip->iFrameY * pClip->tFrameSize.y;
-			}
-		}
+	//	if (m_pAnimation) {
+	//		PANIMATIONCLIP pClip =
+	//			m_pAnimation->GetCurrentClip();
 
-		tImagePos += m_tImageOffset;
-
-		if (m_pTexture->bAlpha == true)
-		{
-			BLENDFUNCTION ftn;
-			ftn.BlendOp = AC_SRC_OVER;
-			ftn.BlendFlags = 0;
-			ftn.SourceConstantAlpha = 255;
-			ftn.AlphaFormat = AC_SRC_ALPHA;
-			AlphaBlend(hDC, tPos.x, tPos.y, m_tSize.x,
-				m_tSize.y,
-				m_pTexture->GetDC(), tImagePos.x, tImagePos.y, m_tSize.x, m_tSize.y, ftn);
-		}
-		else
-		{
-			if (m_pTexture->GetColorKeyEnable() == true) {
-				TransparentBlt(hDC, tPos.x, tPos.y, m_tSize.x,
-					m_tSize.y, m_pTexture->GetDC(), tImagePos.x, tImagePos.y,
-					m_tSize.x, m_tSize.y, m_pTexture->GetColorKey());
-			}
-			else {
-				BitBlt(hDC, tPos.x, tPos.y,
-					m_tSize.x, m_tSize.y, m_pTexture->GetDC(), tImagePos.x, tImagePos.y,
-					SRCCOPY);
-			}
-			/*BLENDFUNCTION ftn;
-			ftn.BlendOp = AC_SRC_OVER;
-			ftn.BlendFlags = 0;
-			ftn.SourceConstantAlpha = 255;
-			ftn.AlphaFormat = AC_SRC_OVER;
-
-			AlphaBlend(hDC, tPos.x, tPos.y, m_tSize.x,
-				m_tSize.y,
-				m_pTexture->GetDC(), tImagePos.x, tImagePos.y, m_tSize.x, m_tSize.y, ftn);*/
-		}
-	}
-
-	//list<CCollider*>::iterator iter;
-	//list<CCollider*>::iterator iterEnd = m_ColliderList.end();
-
-	//for (iter = m_ColliderList.begin(); iter != iterEnd; ) {
-	//	if (!(*iter)->GetEnable()) {
-	//		++iter;
-	//		continue;
+	//		if (pClip->eType == AT_ATLAS) {
+	//			tImagePos.x = pClip->iFrameX * pClip->tFrameSize.x;
+	//			tImagePos.y = pClip->iFrameY * pClip->tFrameSize.y;
+	//		}
 	//	}
+	//	tImagePos += m_tImageOffset;
 
-	//	(*iter)->Render(hDC, fDeltaTime);
-
-	//	if (!(*iter)->GetLife()) {
-	//		SAFE_RELEASE((*iter));
-	//		iter = m_ColliderList.erase(iter);
-	//		iterEnd = m_ColliderList.end();
+	//	if (m_pTexture->bAlpha == true)
+	//	{
+	//		BLENDFUNCTION ftn;
+	//		ftn.BlendOp = AC_SRC_OVER;
+	//		ftn.BlendFlags = 0;
+	//		ftn.SourceConstantAlpha = 255;
+	//		ftn.AlphaFormat = AC_SRC_ALPHA;
+	//		AlphaBlend(hDC, tPos.x, tPos.y, m_tSize.x,
+	//			m_tSize.y,
+	//			m_pTexture->GetDC(), tImagePos.x, tImagePos.y, m_tSize.x, m_tSize.y, ftn);
 	//	}
 	//	else
-	//		++iter;
-	//}
+	//	{
+	//		if (m_pTexture->GetColorKeyEnable() == true) {
+	//			TransparentBlt(hDC, tPos.x, tPos.y, m_tSize.x,
+	//				m_tSize.y, m_pTexture->GetDC(), tImagePos.x, tImagePos.y,
+	//				m_tSize.x, m_tSize.y, m_pTexture->GetColorKey());
+	//		}
+	//		else {
+	//			BitBlt(hDC, tPos.x, tPos.y,
+	//				m_tSize.x, m_tSize.y, m_pTexture->GetDC(), tImagePos.x, tImagePos.y,
+	//				SRCCOPY);
+	//		}
+	//		/*BLENDFUNCTION ftn;
+	//		ftn.BlendOp = AC_SRC_OVER;
+	//		ftn.BlendFlags = 0;
+	//		ftn.SourceConstantAlpha = 255;
+	//		ftn.AlphaFormat = AC_SRC_OVER;
+
+	//		AlphaBlend(hDC, tPos.x, tPos.y, m_tSize.x,
+	//			m_tSize.y,
+	//			m_pTexture->GetDC(), tImagePos.x, tImagePos.y, m_tSize.x, m_tSize.y, ftn);*/
+	//	}
+	//};
 
 	if (GET_SINGLE(CCore)->GetInst()->bDebug == true) {
 		if (auto IsPlayer = dynamic_cast<CPlayer*>(this); IsPlayer != nullptr) {
@@ -473,8 +450,6 @@ void CPlayer::Render(HDC hDC, float fDeltaTime)
 			DebugCollisionPrint(hDC);
 		}
 	}
-
-
 #ifdef _DEBUG
 		//DebugPrintHP(hDC, m_iHP);
 		//CObj::DebugCollisionPrint(hDC);

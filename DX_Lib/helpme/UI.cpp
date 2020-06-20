@@ -7,22 +7,20 @@
 #include "Mouse.h"
 #include <algorithm>
 #include "CCore.h"
+#include "D3DTexture.h"
 CUI::CUI():
-	CObj()
-{
+	CObj(){
 	CollisionTag = L"UI";
 }
 
 CUI::CUI(const CUI& ui):
-CObj(ui)
-{
+CObj(ui){
 	CollisionTag = L"UI";
 
 	m_eState=  BS_NONE;
 }
 
-CUI::~CUI()
-{
+CUI::~CUI(){
 }
 
 void CUI::MouseOnEvent(CObj* const Target, float fDeltaTime){
@@ -96,8 +94,6 @@ void CUI::Collision(float fDeltaTime)
 void CUI::Hit(CObj* const Target, float fDeltaTime)
 {
 	CObj::Hit(Target, fDeltaTime);
-
-	
 }
 
 void CUI::FirstHitEvent(CObj* const Target, float fDeltaTime)
@@ -108,13 +104,31 @@ void CUI::FirstHitEvent(CObj* const Target, float fDeltaTime)
 void CUI::ReleaseHitEvent(CObj* const Target, float fDeltaTime)
 {
 	CObj::ReleaseHitEvent(Target, fDeltaTime);
-	
 }
 
 void CUI::Render(HDC hDC, float fDeltaTime)
 {
-	if (m_pTexture) {
+	if (!m_bEnable)return;
 
+	POSITION tPos = m_tPos - m_tSize * m_tPivot;
+	
+	RESOLUTION tClientRect = GET_SINGLE(CCamera)->GetClientRect();
+	bool bInClient = true;
+
+	if (tPos.x + m_tSize.x < 0) {
+		bInClient = false;
+	}
+	else if (tPos.x > tClientRect.iW) {
+		bInClient = false;
+	}
+	else if (tPos.y + m_tSize.y < 0) {
+		bInClient = false;
+	}
+	else if (tPos.y > tClientRect.iH) {
+		bInClient = false;
+	}
+
+	if (bInClient) {
 		POSITION tImagePos;
 
 		if (m_pAnimation) {
@@ -127,17 +141,23 @@ void CUI::Render(HDC hDC, float fDeltaTime)
 			}
 		}
 
-		tImagePos += m_tImageOffset;
 
-		if (m_pTexture->GetColorKeyEnable() == true) {
-			TransparentBlt(hDC, m_tPos.x, m_tPos.y, m_tSize.x,
-				m_tSize.y, m_pTexture->GetDC(), tImagePos.x, tImagePos.y,
-				m_tSize.x, m_tSize.y, m_pTexture->GetColorKey());
-		}
-		else {
-			BitBlt(hDC, m_tPos.x, m_tPos.y,
-				m_tSize.x, m_tSize.y, m_pTexture->GetDC(), tImagePos.x, tImagePos.y,
-				SRCCOPY);
+		if (_Texture != nullptr) {
+			// 원본 이미지
+			RESOLUTION ClientRect{ GET_SINGLE(CCore)->GetResolution() };
+			_Texture->SetDestRect({ tPos.x,tPos.y,tPos.x + m_tSize.x,
+				m_tSize.y + tPos.y });
+
+			_Texture->SetSrcRect({ 
+				tImagePos.x + m_tImageOffset.x,
+				tImagePos.y + m_tImageOffset.y ,
+				tImagePos.x + m_tImageOffset.x +m_tSize.x,
+				tImagePos.y + m_tImageOffset.y +m_tSize.y });
+
+			if (auto GFX = GET_SINGLE(CCore)->m_Graphics;
+				GFX != nullptr) {
+				GFX->GetMeshRef().Render(*_Texture);
+			}
 		}
 	}
 
@@ -145,31 +165,11 @@ void CUI::Render(HDC hDC, float fDeltaTime)
 		auto Pos = GetPos();
 		auto Size = GetSize();
 
-		MoveToEx(hDC, Pos.x, Pos.y, NULL);
+		/*MoveToEx(hDC, Pos.x, Pos.y, NULL);
 		LineTo(hDC, Pos.x + Size.x, Pos.y);
 		LineTo(hDC, Pos.x + Size.x, Pos.y + Size.y);
 		LineTo(hDC, Pos.x, Pos.y + Size.y);
-		LineTo(hDC, Pos.x, Pos.y);
-	}
-	
-	list<CCollider*>::iterator iter;
-	list<CCollider*>::iterator iterEnd = m_ColliderList.end();
-
-	for (iter = m_ColliderList.begin(); iter != iterEnd; ) {
-		if (!(*iter)->GetEnable()) {
-			++iter;
-			continue;
-		}
-
-		(*iter)->Render(hDC, fDeltaTime);
-
-		if (!(*iter)->GetLife()) {
-			SAFE_RELEASE((*iter));
-			iter = m_ColliderList.erase(iter);
-			iterEnd = m_ColliderList.end();
-		}
-		else
-			++iter;
+		LineTo(hDC, Pos.x, Pos.y);*/
 	}
 }
 

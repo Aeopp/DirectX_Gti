@@ -46,6 +46,9 @@ bool CDungeonScecne::Init()
 	MonstersSpawn<CSlime>(CurrentDefaultLayer, L"Slime", { { 421,593 },{ 552,593 } }, { 0,2250 });
 	MonstersSpawn<CSlime>(CurrentDefaultLayer, L"Slime", { { 1840,501 },{ 2004,501 },{ 2103,501 } }, { 0,2250 });
 
+	MonstersSpawn<CSlime>(CurrentDefaultLayer, L"Slime", { { 868,861 },{ 1081,847 } }, { 0,2250 });
+	MonstersSpawn<CSlime>(CurrentDefaultLayer, L"Slime", { { 165,950 },{ 455,960 } }, { 0,2250 });
+
 	GET_SINGLE(CCamera)->SetTarget(pPlayer);
 	GET_SINGLE(CCamera)->SetPivot(0.5f, 0.3f);
 	GET_SINGLE(CCamera)->SetWorldResolution(2250, 1375);

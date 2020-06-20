@@ -3,7 +3,7 @@
 #include "Types.h"
 #include "Layer.h"
 #include "Camera.h"
-
+#include <d2d1.h>
 class CObj : public CRef
 {
 protected:
@@ -11,6 +11,8 @@ protected:
 	CObj(const CObj& Obj);
 public:
 	static inline list<CObj*> m_ObjList;
+	class Mesh* _Mesh{ nullptr };
+	class Texture* _Texture{ nullptr };
 public:
 	bool bCollision = true; 
 	bool bDead = false; 
@@ -41,7 +43,7 @@ protected:
 	float m_fGravityTime; 
 	int m_iRef;
 	wstring m_strTag;
-	
+
 	POSITION m_tRenderPos;
 	POSITION m_tRenderSize;
 	
@@ -146,12 +148,12 @@ public:
 		const wstring& strTexKey, const wchar_t* pFileName,
 		const wstring& strPathKey = TEXTURE_PATH);
 
-	bool AddAnimationClip(const wstring& strName, ANIMATION_TYPE eType,
-		ANIMATION_OPTION eOption, float fAnimationLimitTime,
-		int iFrameMaxX, int iFrameMaxY, int iStartX, int iStartY,
-		int iLengthX, int iLengthY, float fOptionLimitTime,
-		const wstring& strTexKey, const vector<wstring >& vecFileName,
-		const wstring& strPathKey = TEXTURE_PATH);
+	//bool AddAnimationClip(const wstring& strName, ANIMATION_TYPE eType,
+	//	ANIMATION_OPTION eOption, float fAnimationLimitTime,
+	//	int iFrameMaxX, int iFrameMaxY, int iStartX, int iStartY,
+	//	int iLengthX, int iLengthY, float fOptionLimitTime,
+	//	const wstring& strTexKey, const vector<wstring >& vecFileName,
+	//	const wstring& strPathKey = TEXTURE_PATH);
 
 	void SetAnimationClipColorkey(const wstring& strClip, unsigned char r,
 		unsigned char g, unsigned char b);
@@ -174,14 +176,7 @@ public:
 	bool GetPhysics() const& {
 		return m_bIsPhysics;
 	};
-	/*inline void SetHitList(class CObj* ObjKey,ECOLLISION_STATE NewEState)& {
-		auto is_find = std::find_if(HitList.begin(), HitList.end(),
-			[&ObjKey](auto Pair) {if (Pair.first == ObjKey) return true; else return false; });
 
-		if (is_find != std::end(HitList)) {
-			is_find->second = NewEState; 
-		}
-	}*/
 	inline list<std::pair<class CObj*, ECOLLISION_STATE>>& GetHitList()& noexcept{
 		return HitList;
 	}
@@ -191,18 +186,6 @@ public:
 	}
 	inline void EraseHitList(class CObj* Obj)& {
 
-	/*	HitList.remove_if([Obj](auto Pair) {
-			if (Pair.first == Obj)return true;
-			});*/
-
-		/*auto is_find = std::find_if(std::begin(HitList), std::end(HitList), [Obj](auto Pair) {
-			if (Pair.first == Obj)return true;
-			}           );
-
-		if (is_find != std::end(HitList)) {
-			SAFE_RELEASE(is_find->first);
-			HitList.erase(is_find);
-		}*/
 	
 	}
 	inline std::pair<class CObj*, ECOLLISION_STATE> FindHitList(class CObj* Obj) {
@@ -288,7 +271,10 @@ public:
 public:
 	RECTANGLE GetRect()const {
 		return RECTANGLE{ GetLeft(),GetTop(),GetRight(),GetBottom() };
-	}
+	};
+	D2D1_RECT_F GetD2DRect() {
+		return D2D1_RECT_F{ GetLeft(), GetTop(), GetRight(), GetBottom() };
+	};
 	float GetLeft()const {
 		return m_tPos.x - m_tSize.x * m_tPivot.x;
 	}
@@ -347,8 +333,7 @@ public:
 	}
 
 	void DebugCollisionLinePrint(HDC hDC);
-
-	void SetTexture(class CTexture* pTexture);
+	void SetTexture(Texture* pTexture);
 	void SetTexture(const wstring& strKey,
 		const wchar_t* pFileName = nullptr,
 		const wstring& strPathKey = TEXTURE_PATH); 

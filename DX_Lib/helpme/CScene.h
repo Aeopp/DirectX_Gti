@@ -1,5 +1,5 @@
 #pragma once
-#include "Game.h"
+#include "helper.h"
 #include "Layer.h"
 #include "Ground.h"
 #include "Rope.h"

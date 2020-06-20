@@ -69,7 +69,6 @@ VS_OUT VS(VS_IN vIn)
 	else if (vIn.index == 2) {
 		//vOut.tex = float2(AnimData.r, 1);
 		vOut.tex = float2(0, AnimBottom);
-
 	}
 	else if (vIn.index == 3) {
 		//vOut.tex = float2(AnimData.g,1);

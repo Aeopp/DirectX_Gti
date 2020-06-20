@@ -57,8 +57,6 @@ bool CIngameScene::Init()
 	Portal* pPortal = CObj::CreateObj<Portal>(L"Portal", pStageLayer);
 
 	pPortal->SetPos(427, 1346);
-	
-	
 
 	if(StageFlag==false )
 	pPortal->PortalEvent = []() {
@@ -78,20 +76,21 @@ bool CIngameScene::Init()
 	StageFlag = !StageFlag;
 
 	SAFE_RELEASE(pPortal);
-
+	
 	CLayer* pUILayer = FindLayer(L"UI");
+
+	pPlayer->HPBarSpawn({ 0,(float)GET_SINGLE(CCore)->GetResolution().iH - 71 },
+		{ 570,71 }, { L"Bar1",L"Bar2" }, { L"BAR1.bmp",L"BAR2.bmp" }, pUILayer);
+
 	CurrentUIMinimap = CObj::CreateObj<CUIPanel>(L"pMinimapUI", pUILayer);
 
 	CurrentUIMinimap->SetSize(195, 120);
 	CurrentUIMinimap->SetTexture(L"MinimapUI",
 		L"HappyMinimap.bmp");
 
-	pPlayer->HPBarSpawn({ 0,(float)GET_SINGLE(CCore)->GetResolution().iH - 71 },
-		{ 570,71 }, { L"Bar1",L"Bar2" }, { L"BAR1.bmp",L"BAR2.bmp" }, pUILayer);
 
 	SAFE_RELEASE(pPlayer);
 	SAFE_RELEASE(CurrentUIMinimap);
-	
 
 	return true;
 }

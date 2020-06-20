@@ -50,6 +50,8 @@ bool CDungeonScene2::Init()
 	MonstersSpawn<CMushroom>(pLayer, L"Mushroom", { {837 ,574},{	995, 590}
 		,{1128, 587},{1303, 598},{1457 ,595} }, { 100, 1680});
 		
+	MonstersSpawn<CPig>(pLayer, L"Pig", { {837 ,574},{	995, 590}
+		,{1128, 587},{1303, 598},{1457 ,595} }, { 751, 1567 });
 
 	GET_SINGLE(CCamera)->SetTarget(pPlayer);
 	GET_SINGLE(CCamera)->SetPivot(0.5f, 0.3f);

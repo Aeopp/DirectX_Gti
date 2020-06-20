@@ -4,26 +4,21 @@
 #include "Player.h"
 #include <iostream>
 #include "Input.h"
-bool CRope::Init()
-{
+bool CRope::Init(){
     return true;
 }
 
-void CRope::Input(float fDeltaTime)
-{
+void CRope::Input(float fDeltaTime){
     CObj::Input(fDeltaTime);
 };
 
-int CRope::Update(float fDeltaTime)
-{
+int CRope::Update(float fDeltaTime){
     CObj::Update(fDeltaTime);
     return 0;
 };
 
-int CRope::LateUpdate(float fDeltaTime)
-{
+int CRope::LateUpdate(float fDeltaTime){
     CObj::LateUpdate(fDeltaTime);
-
     return 0;
 };
 

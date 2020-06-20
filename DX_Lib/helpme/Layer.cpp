@@ -120,7 +120,7 @@ void CLayer::Render(HDC hDC, float fDeltaTime)
 			++iter;
 			continue;
 		}
-		(*iter)->Render( hDC, fDeltaTime);
+		(*iter)->Render( nullptr, fDeltaTime);
 		if (!(*iter)->GetLife()) {
 			CObj::EraseObj(*iter);
 			SAFE_RELEASE((*iter));

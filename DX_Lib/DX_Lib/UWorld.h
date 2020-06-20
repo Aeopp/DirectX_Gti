@@ -82,7 +82,6 @@ public:
 			Safe_Delete(*iter);
 			ActorList.erase(iter);
 		}
-		
 	};
 
 	DECLARE_SINGLETON(UWorld)

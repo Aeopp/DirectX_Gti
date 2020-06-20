@@ -48,7 +48,6 @@ bool CInput::Init(HWND hWnd)
 	
 	m_pMouse->SetSize(32, 32);
 
-
 	CAnimation* pAni = m_pMouse->CreateAnimation(L"MouseAnimation");
 	
 	m_pMouse->AddAnimationClip(L"MouseNormal", AT_ATLAS, AO_LOOP,
@@ -56,39 +55,30 @@ bool CInput::Init(HWND hWnd)
 
 	m_pMouse->SetAnimationClipColorkey(L"MouseNormal", 255, 0, 255);
 
-
 	m_pMouse->AddAnimationClip(L"MouseClick", AT_ATLAS, AO_LOOP,
 		1.0f, 1, 1, 0, 0, 1, 1, 0.f, L"MouseClick", L"Mouse\\2.bmp");
 
 	m_pMouse->SetAnimationClipColorkey(L"MouseClick", 255, 0, 255);
-
 
 	m_pMouse->AddAnimationClip(L"MousePlacement", AT_ATLAS, AO_LOOP,
 		1.0f, 1, 1, 0, 0, 1, 1, 0.f, L"MousePlacement", L"Mouse\\3.bmp");
 
 	m_pMouse->SetAnimationClipColorkey(L"MousePlacement", 255, 0, 255);
 
-
-
 	m_pMouse->AddAnimationClip(L"Mouse4", AT_ATLAS, AO_LOOP,
 		1.0f, 1, 1, 0, 0, 1, 1, 0.f, L"Mouse4", L"Mouse\\4.bmp");
 
 	m_pMouse->SetAnimationClipColorkey(L"Mouse4", 255, 0, 255);
-
 
 	m_pMouse->AddAnimationClip(L"Mouse5", AT_ATLAS, AO_LOOP,
 		1.0f, 1, 1, 0, 0, 1, 1, 0.f, L"Mouse5", L"Mouse\\5.bmp");
 
 	m_pMouse->SetAnimationClipColorkey(L"Mouse5", 255, 0, 255);
 
-
-
 	m_pMouse->AddAnimationClip(L"Mouse6", AT_ATLAS, AO_LOOP,
 		1.0f, 1, 1, 0, 0, 1, 1, 0.f, L"Mouse6", L"Mouse\\6.bmp");
 
 	m_pMouse->SetAnimationClipColorkey(L"Mouse6", 255, 0, 255);
-
-
 
 	m_pMouse->AddAnimationClip(L"MouseMushroom", AT_ATLAS, AO_LOOP,
 		1.0f, 1, 1, 0, 0, 1, 1, 0.f, L"MouseMushroom", L"Mouse\\7.bmp");
@@ -101,27 +91,8 @@ bool CInput::Init(HWND hWnd)
 	m_pMouse->m_pAnimation->ChangeClip(L"MouseNormal");
 	m_pMouse->m_pAnimation->SetDefaultClip(L"MouseNormal");
 	m_pMouse->bBorder = false;
+
 	ShowCursor(false); 
-
-		 // FRAMEANIMATION 
-		{
-			/*CAnimation* pAni = m_pMouse->CreateAnimation(L"MouseNormal");
-
-		vector<wstring> vecFileName;
-
-		for (int i = 1; i <= 1; ++i) {
-			wchar_t strFileName[MAX_PATH] = {};
-			wsprintf(strFileName, L"MouseNormal", L"Mouse/%d.bmp", i);
-			vecFileName.push_back(strFileName);
-		}
-
-		m_pMouse->AddAnimationClip(L"MouseNormal", AT_FRAME, AO_LOOP,
-			1.f, 1, 1, 0, 0, 1, 1, 0.f, L"MouseNormal", vecFileName);
-		m_pMouse->SetAnimationClipColorkey(L"MouseNormal", 255, 0, 255);*/
-
-		//   SAFE_RELEASE(pAni);
-		}
-		
 	return true;
 };
 

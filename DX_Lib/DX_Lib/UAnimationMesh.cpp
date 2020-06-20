@@ -6,14 +6,7 @@
 
 bool UAnimationMesh::Frame(float DeltaTime)
 {
-	
-	/*CurrentAnimationData.Current_0 = ;
-	CurrentAnimationData.Current_1 = ;
-	CurrentAnimationData.Current_2 = ;
-	CurrentAnimationData.Current_3 = ;
 
-	ConstantData.uvx = CurrentAnimationData.Current_X;
-	ConstantData.uvy = CurrentAnimationData.Current_Y;*/
 	return true;
 }
 

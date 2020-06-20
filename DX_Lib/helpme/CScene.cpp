@@ -1,6 +1,7 @@
 #include "CScene.h"
 #include "Layer.h"
 #include "Obj.h"
+#include <random>
 #include <algorithm>
 #include <tuple>
 #include <vector>
@@ -161,7 +162,7 @@ void CScene::Render(HDC hDC, float fDeltaTime)
 			++iter;
 			continue;
 		}
-		(*iter)->Render(hDC, fDeltaTime);
+		(*iter)->Render(nullptr, fDeltaTime);
 		if (!(*iter)->GetLife()) {
 			SAFE_DELETE((*iter));
 			iter = m_LayerList.erase(iter);
