@@ -25,8 +25,6 @@ void UTimer::EventNotify(const float DeltaTime) & noexcept {
 	}
 }
 
-
-
 bool	UTimer::Init()
 {
 	// 추가종속성 : winmm.lib 추가

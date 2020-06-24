@@ -1,4 +1,5 @@
 #pragma once
+class FMatrix44;
 
 struct FVector2 {
 	FVector2() = default;
@@ -20,14 +21,11 @@ struct FVector2 {
 	FVector2 operator/(const float Scala)const& noexcept;
 
 	float DotProduct(const FVector2 & Rhs)const& noexcept;
+	float operator|(const FVector2& Rhs) const& noexcept;
 	float Length()const& noexcept;
 	FVector2 Normalize()const& noexcept;
 	// Return Value Degree
 	float Angle(const FVector2 & Rhs)const& noexcept;
-
-
-
-
 
 	float x{};
 	float y{};
@@ -52,6 +50,11 @@ struct FVector3 {
 	FVector3 operator-(const FVector3& Rhs)const& noexcept;
 	FVector3 operator*(const float Scala)const& noexcept;
 	FVector3 operator/(const float Scala)const& noexcept;
+
+	FVector3 CrossProduct(const FVector3& Rhs)const& noexcept;
+	float operator|(const FVector3& Rhs)const& noexcept;
+	FVector3 operator^(const FVector3& Rhs)const& noexcept;
+	FVector3 operator*(const FMatrix44& m)const& noexcept;
 
 	float DotProduct(const FVector3& Rhs)const& noexcept;
 	float Length()const& noexcept;
@@ -85,12 +88,13 @@ struct FVector4 {
 	FVector4 operator*(const float Scala)const& noexcept;
 	FVector4 operator/(const float Scala)const& noexcept;
 
+	float operator|(const FVector4& Rhs)const& noexcept;
+
 	float DotProduct(const FVector4 & Rhs)const& noexcept;
 	float Length()const& noexcept;
 	FVector4 Normalize()const& noexcept;
 	// Return Value Degree
 	float Angle(const FVector4 & Rhs)const& noexcept;
-
 
 	float x{}; float  y{}; float  z{}; float  w{};
 };

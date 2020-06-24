@@ -1,6 +1,7 @@
 #include "FVector.h"
 #include <cmath>
 #include "FMath.h"
+#include "FMatrix44.h"
 FVector3 FVector3::operator+(const FVector3& Rhs) const& noexcept
 {
     return FVector3{ x + Rhs.x,y + Rhs.y,z + Rhs.z };
@@ -37,6 +38,22 @@ FVector3 FVector3::operator/(const float Scala) const& noexcept
     return FVector3{x/Scala,y/Scala,z/Scala};
 }
 
+FVector3 FVector3::CrossProduct(const FVector3& Rhs) const& noexcept
+{
+    // yz zx xy
+    return FVector3{       y*Rhs.z  - Rhs.z * y , z*Rhs.x - Rhs.x * z , x* Rhs.y - Rhs.y*z};
+}
+
+float FVector3::operator|(const FVector3& Rhs) const& noexcept
+{
+    return DotProduct(Rhs);
+}
+
+FVector3 FVector3::operator^(const FVector3& Rhs) const& noexcept
+{
+    return CrossProduct(Rhs);
+}
+
 float FVector3::DotProduct(const FVector3& Rhs) const& noexcept
 {
     return  x * Rhs.x + y * Rhs.y + z * Rhs.z;
@@ -60,6 +77,16 @@ float FVector3::Angle(const FVector3& Rhs) const& noexcept
     float Costheta{ _Lhs.DotProduct(_Rhs) };
     float RadianAngle = std::acosf(Costheta);
     return FMath::RadianTODegree(RadianAngle);
+}
+
+FVector3 FVector3::operator*(const FMatrix44& m)const& noexcept
+{
+    FVector3 v;
+    v.x = x * m._11 + y * m._21 + z * m._31 + m._41;
+    v.y = x * m._12 + y * m._22 + z * m._32 + m._42;
+    v.z = x * m._13 + y * m._23 + z * m._33 + m._43;
+    return v;
+
 }
 
 FVector2 FVector2::operator+(const FVector2& Rhs) const& noexcept
@@ -101,7 +128,10 @@ float FVector2::DotProduct(const FVector2& Rhs) const& noexcept
 {
     return  x * Rhs.x + y * Rhs.y;
 };
-
+float FVector2::operator|(const FVector2& Rhs) const& noexcept
+{
+    return DotProduct(Rhs);
+}
 float FVector2::Length() const& noexcept
 {
     return std::sqrtf(x * x + y * y );
@@ -159,6 +189,11 @@ FVector4 FVector4::operator/(const float Scala) const& noexcept
     return FVector4{ x / Scala,y / Scala,z / Scala ,w / Scala };
 }
 
+float FVector4::operator|(const FVector4& Rhs) const& noexcept
+{
+    return DotProduct(Rhs);
+}
+
 float FVector4::DotProduct(const FVector4& Rhs) const& noexcept
 {
     return  x * Rhs.x + y * Rhs.y + z * Rhs.z + w * Rhs.w;
@@ -183,6 +218,8 @@ float FVector4::Angle(const FVector4& Rhs) const& noexcept
     float RadianAngle = std::acosf(Costheta);
     return FMath::RadianTODegree(RadianAngle);
 }
+
+
 
 
 
